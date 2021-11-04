@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginStart="7dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:weightSum="1"
+        >
+
+        <TextView
+            android:id="@+id/tvNombreManguera"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textStyle="bold"
+            android:textSize="21sp"
+            android:text="MANGUERA: "
+            android:layout_weight="0.5"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:id="@+id/tvTitulo"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_para_titulo_dialogo"
+            android:gravity="center"
+            android:text="VEHÍCULO"
+            android:textColor="@color/md_white_1000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:background="@drawable/bg_para_subtitulo_dialogo"
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:text="PLACA"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:gravity="center"
+            />
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_correspondencia_dialogo"
+            />
+
+        <LinearLayout
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_para_texto_dialogo"
+            android:gravity="center">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:textStyle="bold"
+                android:enabled="false"
+                android:textColor="#ffffff"
+                android:textSize="24sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="20dp"
+                android:paddingEnd="20dp"
+                android:paddingStart="20dp"
+                android:orientation="vertical"
+                android:padding="10px">
+
+                <!-- Sección Vehiculo -->
+                <LinearLayout
+                    android:id="@+id/lyVehiculo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical"
+                            android:text="VEHÍCULO"
+                            android:textColor="@color/md_red_800"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.2"
+                            android:text="PLACA"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:gravity="center_vertical"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="6"
+                            android:background="@drawable/bg_para_cajas_de_texto"
+                            android:gravity="center">
+
+                            <EditText
+                                android:id="@+id/etPlaca"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textStyle="bold"
+                                android:enabled="false"
+                                android:textColor="#ffffff"
+                                android:textSize="24sp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_marginStart="5dp"
+                            android:visibility="gone"
+                            android:id="@+id/lyPlacaNFC"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_para_boton"
+                            android:orientation="vertical">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                app:srcCompat="@drawable/ic_baseline_nfc_24"
+                                tools:ignore="VectorDrawableCompat">
+                            </ImageView>
+
+                            <TextView
+                                android:id="@+id/textPlacaNFC"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:layout_gravity="center"
+                                android:layout_marginBottom="5dp"
+                                android:textSize="10sp"
+                                android:text="ESCANEAR"></TextView>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/messageErrorPlate"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="EL ID NO SE ENCUENTRA RERGISTRADO"
+                        android:textSize="20sp"
+                        android:textColor="@color/md_red_900"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:id="@+id/lyHorometro"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="4dp"
+                        >
+
+                        <!--1.  EDIT TEXT SIMPLE-->
+                        <!--app:boxBackgroundColor="@color/md_black_1000"
+                        app:boxStrokeColor="@color/md_red_900"-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/InputLayout2"
+                            android:id="@+id/inputLayoutHorometro"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            app:helperTextTextColor="@color/md_white_1000"
+                            android:hint="Horómetro(*)"
+                            android:textColorHint="@color/md_white_1000"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etHorometro"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:textSize="14sp"
+                                android:textColor="@color/md_white_1000"
+                                android:textColorHighlight="@color/md_white_1000"
+                                />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lyKilometraje"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="4dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/InputLayout2"
+                            android:id="@+id/inputLayoutKilometraje"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            app:helperTextTextColor="@color/md_white_1000"
+                            android:hint="Kilometraje(*)"
+                            android:textColorHint="@color/md_white_1000"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etKilometraje"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:maxLines="1"
+                                android:textSize="14sp"
+                                android:textColor="@color/md_white_1000"
+                                android:textColorHighlight="@color/md_white_1000"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lyPreSeteo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/InputLayout2"
+                            android:id="@+id/inputLayoutPreSeteo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            app:helperTextTextColor="@color/md_white_1000"
+                            android:hint="PreSeteo(*)"
+                            android:textColor="@color/md_white_1000"
+                            android:textColorHint="@color/md_white_1000"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etPreSeteo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLines="1"
+                                android:textSize="14sp"
+                                android:textColor="@color/md_white_1000"
+                                android:textColorHighlight="@color/md_white_1000"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Sección Conductor -->
+                <LinearLayout
+                    android:id="@+id/lyConductor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="2dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center_vertical"
+                            android:text="CONDUCTOR"
+                            android:textColor="@color/md_red_800"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="end"
+                            android:orientation="horizontal"
+                            >
+                            <LinearLayout
+                                android:id="@+id/lyConductorQR"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/bg_para_boton"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_marginRight="20dp"
+                                    app:srcCompat="@drawable/ic_baseline_qr_code_scanner_24"
+                                    tools:ignore="VectorDrawableCompat"></ImageView>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center_horizontal"
+                                    android:layout_gravity="center"
+                                    android:layout_marginBottom="5dp"
+                                    android:textSize="10sp"
+                                    android:text="ESCANEAR"></TextView>
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="ID"
+                            android:textStyle="bold"
+                            android:textSize="18sp"
+                            android:gravity="center_vertical"
+                            android:layout_weight="4"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_para_cajas_de_texto"
+                            android:gravity="center">
+
+                            <EditText
+                                android:id="@+id/etIdConductor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:textStyle="bold"
+                                android:enabled="false"
+                                android:textColor="#ffffff"
+                                android:textSize="24sp"/>
+
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/messageErrorIdDriver"
+                        android:layout_marginTop="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:text="EL ID NO SE ENCUENTRA RERGISTRADO"
+                        android:textSize="20sp"
+                        android:textColor="@color/md_red_900"
+                        android:visibility="gone"/>
+
+                    <LinearLayout
+                        android:id="@+id/lyNombreConductor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp"
+                        >
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/inputLayoutNombreConductor"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="14sp"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+                            android:textColorHint="@color/md_red_800"
+                            android:hint="Nombre"
+                            app:counterTextColor="@color/md_red_800"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="20"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etNombreConductor"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:textSize="14sp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <!-- Sección Botones -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    >
+
+                    <Button
+                        android:id="@+id/btnCancelar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="CANCELAR"
+                        android:textAlignment="center"
+                        android:textSize="18sp" />
+                    <Button
+                        android:id="@+id/btnRegistrar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dp"
+                        android:gravity="center"
+                        android:text="ENVIAR"
+                        android:textAlignment="center"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="false"
+    android:background="@color/md_black_1000"
+    tools:context=".View.Fragment.EmbeddedPtclWifi">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearContenedor">
+
+        <!--        CABECERA-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_para_cabecera"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="3dp"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginVertical="4dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1.2"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingVertical="3dp"
+                    android:paddingHorizontal="1dp"
+                    >
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:background="@drawable/bg_para_titulo_cabecera"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:text="E/S NUEVA PLANTA"
+                        android:textColor="@color/md_white_1000"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:background="@drawable/bg_para_subtitulo_dialogo"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:text="OPERADOR"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:gravity="center"
+                        android:layout_marginTop="2dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/tvNombreOperador"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:background="@drawable/bg_para_texto_dialogo"
+                        android:gravity="center"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+
+                    <!--
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="1dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:background="@drawable/bg_para_subtitulo_dialogo"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="2dp"
+                            android:text="Operador"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/tvNombreOperador"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_weight="1.2"
+                            android:background="@drawable/bg_para_texto_dialogo"
+                            android:gravity="center"
+                            android:text="Juan Perez"
+                            android:textSize="10sp"
+                            android:textStyle="normal" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="1dp"
+                        android:orientation="horizontal"
+                        >
+
+                        <TextView
+                            android:background="@drawable/bg_para_subtitulo_dialogo"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="2dp"
+                            android:text="Operador"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:background="@drawable/bg_para_texto_dialogo"
+                            android:layout_width="0dp"
+                            android:layout_weight="1.2"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="2dp"
+                            android:text="Juan Perez"
+                            android:textStyle="normal"
+                            android:textSize="14sp"
+                            android:gravity="center"
+                            />
+
+                    </LinearLayout>
+
+                    -->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1.2"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="10dp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="10dp"
+                    android:gravity="center_horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/lyStatusComunication"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:background="@drawable/bg_para_pulsos_0"
+                        android:layout_marginEnd="3dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_para_cuadrado_cabecera"
+                        android:layout_marginStart="3dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="3dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:textColor="#F3A712"
+                                android:text="Temp"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:background="@drawable/bg_para_texto_cabecera"
+                                >
+
+                                <TextView
+                                    android:id="@+id/tvTemperature"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="#F3A712"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:id="@+id/tvTituloBateria"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                android:textColor="#F3A712"
+                                android:text="Bat."
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="3"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:background="@drawable/bg_para_texto_cabecera"
+                                >
+
+                                <TextView
+                                    android:id="@+id/tvBateria"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:textColor="#F3A712"
+                                    android:textSize="10sp"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1.1"
+                    android:layout_height="match_parent"
+                    android:layout_marginVertical="2dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:background="@drawable/bg_para_datos_cabecera"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="1dp"
+                        android:orientation="vertical"
+                        android:paddingTop="2dp"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/lySyncTransactions"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:background="@drawable/bg_para_boton"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/ic_sync_30"
+                                tools:ignore="VectorDrawableCompat"/>
+
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="1dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="Fecha"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvFecha"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="20/04/2021"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="1dp"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="Hora"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvHora"
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="20:15:00"
+                                android:textSize="9sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:background="@drawable/bg_para_datos_cabecera"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="1dp"
+                        android:paddingTop="2dp"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="1dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="RS 232"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                >
+
+                                <TextView
+                                    android:layout_width="20dp"
+                                    android:layout_height="10dp"
+                                    android:background="@drawable/bg_para_alert_rs232"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="1dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="RS 485"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                >
+
+                                <TextView
+                                    android:layout_width="20dp"
+                                    android:layout_height="10dp"
+                                    android:background="@drawable/bg_para_alert_rs485"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginHorizontal="1dp"
+                            android:gravity="center"
+                            >
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_weight="2"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="RS 486"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:layout_height="wrap_content"
+                                android:gravity="start"
+                                >
+
+                                <TextView
+                                    android:layout_width="20dp"
+                                    android:layout_height="10dp"
+                                    android:background="@drawable/bg_para_alert_rs486"
+                                    android:textStyle="bold" />
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--        FILA M1 Y M2-->
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/LayoutContentHoses"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!--MANGUERA 1-->
+                    <!--MANGUERA 2-->
+                    <!--MANGUERA 3-->
+                    <!--MANGUERA 4-->
+
+                </LinearLayout>
+
+
+            </ScrollView>
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

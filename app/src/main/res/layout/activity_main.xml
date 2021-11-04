@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/main_background"
+    tools:context=".View.Activity.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="115.5dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:orientation="vertical"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5.3"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:id="@+id/btnEstacion"
+                android:layout_width="105dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_para_boton_barra_activo"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_station_white_30dp"
+                    tools:ignore="VectorDrawableCompat"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Estación"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnDuplicadoTicket"
+                android:layout_width="105dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_para_boton_barra_inactivo"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center"
+                    app:srcCompat="@drawable/ic_ticket_white_30dp"
+                    tools:ignore="VectorDrawableCompat"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:text="Ticket"
+                    android:textSize="12sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnPreCierre"
+                android:layout_width="105dp"
+                android:layout_height="55dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/bg_para_boton_barra_inactivo"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_vertical"
+                    app:srcCompat="@drawable/ic_work_off_white_30"
+                    tools:ignore="VectorDrawableCompat"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_vertical"
+                    android:text="Turno"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            >
+            <LinearLayout
+                android:id="@+id/lySettings"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/bg_para_configuracion_pausa"
+                android:orientation="horizontal" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/main_activity_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="115.5dp"
+        android:layout_marginBottom="15.25dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

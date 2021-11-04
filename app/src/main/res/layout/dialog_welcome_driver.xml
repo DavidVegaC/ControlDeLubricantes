@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="250dp"
+    android:padding="10dp"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/md_black_1000"
+    >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BIENVENIDO: "
+        android:textColor="@color/md_red_900"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/nameDriver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="NOMBRE"
+        android:textColor="@color/md_white_1000"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        />
+
+    <!-- ANIMACIONES -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_marginTop="5dp"
+        android:layout_width="300dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        app:lottie_imageAssetsFolder="assets"
+        app:lottie_fileName="city-driver-animation.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

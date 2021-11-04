@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/md_black_1000"
+    android:padding="10dp"
+    tools:context=".View.Fragment.LoginFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- INICIO SECCION BOTON SINCRONIZAR-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSync"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    android:padding="0dp"
+                    app:icon="@drawable/ic_sync_30"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconSize="40dp"
+                    android:gravity="left"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle">
+
+                </com.google.android.material.button.MaterialButton>
+                <ImageView
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_gravity="center|top"
+                    android:src="@drawable/logo_assac_gcm_corto" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:layout_gravity="right"
+                    android:id="@+id/txtIdDispositivoFL"></TextView>
+            </FrameLayout>
+
+            <!-- INICIO SECCION INFORMATIVO ASSAC-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center|top"
+                    android:textStyle="bold"
+                    android:text="@string/login_title"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|top"
+                    android:text="@string/login"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:orientation="vertical">
+
+                <!-- INICIO DE SECCION USUARIO  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                                android:src="@drawable/ic_person_red_50" />
+                        <LinearLayout
+                            android:layout_width="2dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="match_parent"
+                            android:background="@color/md_red_800"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_para_cajas_de_texto"
+                        android:layout_weight="7">
+
+                        <!--1.  EDIT TEXT SIMPLE-->
+                        <!--                        <com.google.android.material.textfield.TextInputLayout
+                                                    android:id="@+id/LayoutUsuario"
+                                                   style="@style/InputLayout1"
+                                                    android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:hint="@string/user"
+                                                    app:counterMaxLength="20">
+
+                                                   <com.google.android.material.textfield.TextInputEditText
+                                                        android:id="@+id/txtUsuario"
+                                                        style="@style/EditText1"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:inputType="text" />
+
+                                  </com.google.android.material.textfield.TextInputLayout>-->
+                        <EditText
+                            android:id="@+id/txtUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/user"
+                            android:inputType="text"
+                            android:textColorHint="@color/md_grey_500"
+                            android:textColor="@color/md_white_1000"
+                            android:maxLines="1"
+                            android:maxLength="20"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"></EditText>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!-- FIN DE SECCION USUARIO  -->
+
+                <!-- INICIO DE SECCION CONTRASEÑA  -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_lock_red_50" />
+                        <LinearLayout
+                            android:layout_width="2dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_height="match_parent"
+                            android:background="@color/md_red_800"></LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_para_cajas_de_texto"
+                        android:layout_weight="7">
+
+                        <!--                        <com.google.android.material.textfield.TextInputLayout-->
+                        <!--                            android:id="@+id/LayoutPassword"-->
+                        <!--                            style="@style/InputLayout1"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="match_parent"-->
+                        <!--                            android:hint="@string/password"-->
+                        <!--                            app:counterMaxLength="8"-->
+                        <!--                            app:endIconMode="password_toggle">-->
+
+                        <!--                            <com.google.android.material.textfield.TextInputEditText-->
+                        <!--                                android:id="@+id/txtPassword"-->
+                        <!--                                style="@style/EditText1"-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:inputType="textPassword" />-->
+
+                        <!--                        </com.google.android.material.textfield.TextInputLayout>-->
+                        <EditText
+                            android:id="@+id/txtPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="@string/password"
+                            android:textColorHint="@color/md_grey_500"
+                            android:textColor="@color/md_white_1000"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:maxLength="20"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"></EditText>
+                    </LinearLayout>
+
+                </LinearLayout>
+                <!-- FIN DE SECCION CONTRASEÑA  -->
+
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnIngresar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="100dp"
+                android:layout_marginRight="100dp"
+                android:text="@string/entry">
+
+            </com.google.android.material.button.MaterialButton>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- FIN SECCION  INICIO DE SESION-->
+
+    <!-- INICIO SECCION BOTON INGRESAR-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnCrearUsuario"
+            android:visibility="gone"
+            android:text="Crear Usuario"></Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnListarUsuario"
+            android:visibility="gone"
+            android:text="Listar Usuario"></Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/btnBuscarUsuario"
+            android:text="Buscar Usuario"></Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/btnActualizarUsuario"
+            android:text="Actualizar Usuario"></Button>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/btnConsumirServicio"
+            android:text="ConsumirServicio"></Button>
+    </LinearLayout>
+    <!-- FIN SECCION BOTON INGRESAR-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
