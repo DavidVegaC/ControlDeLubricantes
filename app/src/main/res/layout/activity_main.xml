@@ -86,14 +86,14 @@
                     android:layout_gravity="center_vertical"
                     app:srcCompat="@drawable/ic_work_off_white_30"
                     tools:ignore="VectorDrawableCompat"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
                     android:layout_gravity="center_vertical"
-                    android:text="Turno"
-                    />
+                    android:text="PreCierre"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </LinearLayout>
