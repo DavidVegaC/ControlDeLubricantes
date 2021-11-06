@@ -112,7 +112,7 @@ public class CRUDOperations {
             String UPassword = cursor.getString(9);
             String RegistrationStatus = cursor.getString(10);
 
-            userEntity= new UserEntity(idSqlLite, IdUser,IdPerson, PersonName,Photocheck,FirstLastName,SecondLastName,ULevel,UUser,UPassword,RegistrationStatus);
+            userEntity= new UserEntity(idSqlLite, IdUser,IdPerson, Photocheck, PersonName,FirstLastName,SecondLastName,ULevel,UUser,UPassword,RegistrationStatus);
         }
 
         return userEntity;
@@ -152,7 +152,7 @@ public class CRUDOperations {
             String UPassword = cursor.getString(9);
             String RegistrationStatus = cursor.getString(10);
 
-            userEntity= new UserEntity(idSqlLite, IdUser,IdPerson, PersonName,Photocheck,FirstLastName,SecondLastName,ULevel,UUser,UPassword,RegistrationStatus);
+            userEntity= new UserEntity(idSqlLite, IdUser,IdPerson, Photocheck, PersonName,FirstLastName,SecondLastName,ULevel,UUser,UPassword,RegistrationStatus);
         }
 
         return userEntity;
@@ -1189,6 +1189,125 @@ public class CRUDOperations {
 
         return totalCount;
     }
+
+    //TB_PRODUCT
+    public int addProduct(ProductEntity productEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_PRODUCT, productEntity.getIdProduct());
+        values.put(MyDatabase.KEY_NUMBER_TB_PRODUCT, productEntity.getNumberProduct());
+        values.put(MyDatabase.KEY_NAME_TB_PRODUCT, productEntity.getProductName());
+        values.put(MyDatabase.KEY_MEASUREMENT_UNIT_TB_PRODUCT, productEntity.getMeasurementUnit());
+        values.put(MyDatabase.KEY_ELIPSE_CODE_TB_PRODUCT, productEntity.getElipseCode());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_PRODUCT, productEntity.getRegistrationStatus());
+
+        int row = (int) db.insert(MyDatabase.TB_PRODUCT, null, values);
+        db.close();
+        return row;
+    }
+
+    public int updateProduct(ProductEntity productEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_PRODUCT, productEntity.getIdProduct());
+        values.put(MyDatabase.KEY_NUMBER_TB_PRODUCT, productEntity.getNumberProduct());
+        values.put(MyDatabase.KEY_NAME_TB_PRODUCT, productEntity.getProductName());
+        values.put(MyDatabase.KEY_MEASUREMENT_UNIT_TB_PRODUCT, productEntity.getMeasurementUnit());
+        values.put(MyDatabase.KEY_ELIPSE_CODE_TB_PRODUCT, productEntity.getElipseCode());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_PRODUCT, productEntity.getRegistrationStatus());
+
+        int row =db.update(MyDatabase.TB_PRODUCT,
+                values,
+                MyDatabase.KEY_ID_TB_PRODUCT+"=?",
+                new String[]{String.valueOf(productEntity.getIdProduct())});
+        db.close();
+
+        return row;
+    }
+
+    public int deleteProduct(ProductEntity productEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int row= db.delete(MyDatabase.TB_PRODUCT,
+                MyDatabase.KEY_ID_TB_PRODUCT+"=?",
+                new String[]{String.valueOf(productEntity.getIdProduct())});
+        db.close();
+        return row;
+    }
+
+    public ProductEntity getProduct(int id)
+    {
+        ProductEntity productEntity= new ProductEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        Cursor cursor = db.query(MyDatabase.TB_PRODUCT,
+                new String[]{
+                        MyDatabase.KEY_ID_SQLLITE_TB_PRODUCT,
+                        MyDatabase.KEY_ID_TB_PRODUCT,
+                        MyDatabase.KEY_NUMBER_TB_PRODUCT,
+                        MyDatabase.KEY_NAME_TB_PRODUCT,
+                        MyDatabase.KEY_MEASUREMENT_UNIT_TB_PRODUCT,
+                        MyDatabase.KEY_ELIPSE_CODE_TB_PRODUCT,
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_USER
+                },
+                MyDatabase.KEY_ID_TB_PRODUCT + "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdProduct = Integer.parseInt(cursor.getString(1));
+            int NumberProduct = Integer.parseInt(cursor.getString(2));
+            String NameProduct = cursor.getString(3);
+            String MeasurementUnit = cursor.getString(4);
+            String ElipseCode = cursor.getString(5);
+            String RegistrationStatus = cursor.getString(6);
+
+            productEntity= new ProductEntity(idSqlLite,
+                    IdProduct, NumberProduct, NameProduct, MeasurementUnit, ElipseCode,RegistrationStatus);
+        }
+
+        return productEntity;
+    }
+
+    public List<ProductEntity> getAllProduct()
+    {
+        List<ProductEntity> lst =new ArrayList<ProductEntity>();
+        String sql= "SELECT  * FROM " + MyDatabase.TB_PRODUCT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                ProductEntity productEntity =new ProductEntity();
+                productEntity.setIdSqlLite(Integer.parseInt(cursor.getString(0)));
+                productEntity.setIdProduct(Integer.parseInt(cursor.getString(1)));
+                productEntity.setNumberProduct(Integer.parseInt(cursor.getString(2)));
+                productEntity.setProductName(cursor.getString(3));
+                productEntity.setMeasurementUnit(cursor.getString(4));
+                productEntity.setElipseCode(cursor.getString(5));
+                productEntity.setRegistrationStatus(cursor.getString(6));
+
+                lst.add(productEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+    public int getProductCount()
+    {
+        int totalCount = 0;
+        String sql= "SELECT * FROM "+MyDatabase.TB_PRODUCT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        totalCount = cursor.getCount();
+        cursor.close();
+
+        return totalCount;
+    }
+
 
     //TB_OPERATOR
     public int addOperator(OperatorEntity operatorEntity)

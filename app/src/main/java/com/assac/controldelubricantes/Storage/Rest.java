@@ -237,9 +237,9 @@ public class Rest {
                             for (int i = 0; i < userEntities.size(); i++) {
                                 UserEntity userEntity = new UserEntity();
                                 UserEntity userEntity1 = new UserEntity(userEntities.get(i).getIdUser(),
-                                        userEntities.get(i).getIdPerson(),  userEntities.get(i).getPersonName(),
-                                        userEntities.get(i).getFirstLastName(), userEntities.get(i).getSecondLastName(),
-                                        userEntities.get(i).getPhotocheck(), userEntities.get(i).getULevel(),
+                                        userEntities.get(i).getIdPerson(),  userEntities.get(i).getPhotocheck(),
+                                        userEntities.get(i).getPersonName(),  userEntities.get(i).getFirstLastName(), userEntities.get(i).getSecondLastName(),
+                                         userEntities.get(i).getULevel(),
                                         userEntities.get(i).getUUser(),userEntities.get(i).getUPassword(),
                                         userEntities.get(i).getRegistrationStatus());
 

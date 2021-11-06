@@ -19,6 +19,10 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String TB_HOSE = "tb_hose";
     public static final String TB_PLATE = "tb_plate";
     public static final String TB_WORKSHIFT = "tb_workshift";
+    public static final String TB_PRODUCT = "tb_product";
+    public static final String TB_COMPARTMENT = "tb_compartment";
+    public static final String TB_REASON = "tb_reason";
+
     public static final String TB_MIGRATION= "tb_migration";
     public static final String TB_MIGRATION_ERROR = "tb_migration_error";
     public static final String TB_ERROR= "tb_error";
@@ -47,6 +51,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String KEY_DOCUMENT_NUMBER_TB_PERSON = "DocumentNumber";
     public static final String KEY_DOCUMENT_PATHBASE64_TB_PERSON = "PathFileBase64";
     public static final String KEY_REGISTRATION_STATUS_TB_PERSON = "RegistrationStatus";
+
 
     //Columnas de la Tabla DRIVER
     public static final String KEY_ID_SQLLITE_TB_DRIVER = "idSqlLiteDrive";
@@ -90,6 +95,33 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String KEY_CODE_TB_PLATE = "PlateCode";
     public static final String KEY_STATUS_TB_PLATE = "PlateStatus";
     public static final String KEY_COMPANY_TB_PLATE = "PlateCompany";
+
+    //Columnas de la tabla PRODUCT
+    public static final String KEY_ID_SQLLITE_TB_PRODUCT = "idSqlLiteProduct";
+    public static final String KEY_ID_TB_PRODUCT = "IdProduct";
+    public static final String KEY_NUMBER_TB_PRODUCT = "NumberProduct";
+    public static final String KEY_NAME_TB_PRODUCT= "NameProduct";
+    public static final String KEY_MEASUREMENT_UNIT_TB_PRODUCT = "MeasurementUnit";
+    public static final String KEY_ELIPSE_CODE_TB_PRODUCT = "ElipseCode";
+    public static final String KEY_REGISTRATION_STATUS_TB_PRODUCT = "RegistrationStatus";
+
+    //Columnas de la tabla COMPARTMENT
+    public static final String KEY_ID_SQLLITE_TB_COMPARTMENT = "idSqlLiteCompartment";
+    public static final String KEY_ID_TB_COMPARTMENT = "IdCompartment";
+    public static final String KEY_PRODUCT_TB_COMPARTMENT = "IdProduct";
+    public static final String KEY_TYPE_TB_COMPARTMENT= "IdCompartmentType";
+    public static final String KEY_NAME_TB_COMPARTMENT = "CompartmentName";
+    public static final String KEY_CAPACITY_TB_COMPARTMENT = "Capacity";
+    public static final String KEY_ALERT_CAPACITY_TB_COMPARTMENT = "AlertCapacity";
+    public static final String KEY_REGISTRATION_STATUS_TB_COMPARTMENT= "RegistrationStatus";
+
+    //Columnas de la tabla REASON
+    public static final String KEY_ID_SQLLITE_TB_REASON = "idSqlLiteReason";
+    public static final String KEY_ID_TB_REASON = "IdReason";
+    public static final String KEY_PRODUCT_TB_REASON = "IdProduct";
+    public static final String KEY_NAME_TB_REASON= "NameReason";
+    public static final String KEY_NUMBER_TB_REASON = "NumberReason";
+    public static final String KEY_REGISTRATION_STATUS_TB_REASON= "RegistrationStatus";
 
     //Columnas de la Tabla MIGRACIÓN
     public static final String KEY_ID_SQLLITE_TB_MIGRATION = "IdSqlLiteMigration";
@@ -206,6 +238,36 @@ public class MyDatabase extends SQLiteOpenHelper {
                 + KEY_MIGRATION_STATUS_TB_TRANSACTION + " TEXT "
                 + ")";
         db.execSQL(sqlTransaction);
+
+        String sqlProduct= "CREATE TABLE " + TB_PRODUCT + "("
+                + KEY_ID_SQLLITE_TB_PRODUCT + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + KEY_ID_TB_PRODUCT + " INTEGER,"
+                + KEY_NUMBER_TB_PRODUCT + " INTEGER,"
+                + KEY_NAME_TB_PRODUCT + " TEXT,"
+                + KEY_MEASUREMENT_UNIT_TB_PRODUCT + " TEXT,"
+                + KEY_ELIPSE_CODE_TB_PRODUCT + " TEXT,"
+                + KEY_REGISTRATION_STATUS_TB_USER + " TEXT" + ")";
+        db.execSQL(sqlProduct);
+
+        String sqlCompartment= "CREATE TABLE " + TB_COMPARTMENT + "("
+                + KEY_ID_SQLLITE_TB_COMPARTMENT + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + KEY_ID_TB_COMPARTMENT + " INTEGER,"
+                + KEY_PRODUCT_TB_COMPARTMENT + " INTEGER,"
+                + KEY_TYPE_TB_COMPARTMENT + " INTEGER,"
+                + KEY_NAME_TB_COMPARTMENT + " TEXT,"
+                + KEY_CAPACITY_TB_COMPARTMENT + " TEXT,"
+                + KEY_ALERT_CAPACITY_TB_COMPARTMENT + " INTEGER,"
+                + KEY_REGISTRATION_STATUS_TB_USER + " TEXT" + ")";
+        db.execSQL(sqlCompartment);
+
+        String sqlReason= "CREATE TABLE " + TB_REASON + "("
+                + KEY_ID_SQLLITE_TB_REASON + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + KEY_ID_TB_REASON + " INTEGER,"
+                + KEY_PRODUCT_TB_REASON + " INTEGER,"
+                + KEY_NAME_TB_REASON + " TEXT,"
+                + KEY_NUMBER_TB_REASON + " INTEGER,"
+                + KEY_REGISTRATION_STATUS_TB_USER + " TEXT" + ")";
+        db.execSQL(sqlReason);
 
         String sqlMigrationError= "CREATE TABLE " + TB_MIGRATION_ERROR + "("
                 + KEY_ID_SQLLITE_TB_ERROR+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"

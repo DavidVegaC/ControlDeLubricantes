@@ -45,7 +45,7 @@ public class UserEntity implements Serializable {
     public UserEntity() {
     }
 
-    public UserEntity(int idUser, int idPerson, String personName, String photocheck, String firstLastName, String secondLastName, int ULevel, String UUser, String UPassword, String registrationStatus) {
+    public UserEntity(int idUser, int idPerson,  String photocheck, String personName, String firstLastName, String secondLastName, int ULevel, String UUser, String UPassword, String registrationStatus) {
         IdUser = idUser;
         IdPerson = idPerson;
         PersonName = personName;
@@ -58,7 +58,7 @@ public class UserEntity implements Serializable {
         RegistrationStatus = registrationStatus;
     }
 
-    public UserEntity(int idSqlLite, int idUser, int idPerson, String personName, String photocheck, String firstLastName, String secondLastName, int ULevel, String UUser, String UPassword, String registrationStatus) {
+    public UserEntity(int idSqlLite, int idUser, int idPerson, String photocheck, String personName,  String firstLastName, String secondLastName, int ULevel, String UUser, String UPassword, String registrationStatus) {
         this.idSqlLite = idSqlLite;
         IdUser = idUser;
         IdPerson = idPerson;

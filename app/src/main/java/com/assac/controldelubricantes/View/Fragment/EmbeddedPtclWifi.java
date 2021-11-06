@@ -102,8 +102,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     Handler handlerSocket;
     final int handlerState = 0;
     //public static  String SERVER_IP = "192.168.1.98";
-    //public static  String SERVER_IP = "192.168.1.7";
-    public static  String SERVER_IP = "192.168.4.22";
+    public static  String SERVER_IP = "192.168.1.7";
+    //public static  String SERVER_IP = "192.168.4.22";
     public static  int SERVER_PORT = 2230;
 
     private ClientTCPThread clientTCPThread;
@@ -132,8 +132,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     private NetworkUtil networkUtil;
 
     //private String SSID="TP-LINK_AP_F2D8";
-    //private String SSID="MOVISTAR_1B9E";
-    private String SSID="EMBEDDED";
+    private String SSID="MOVISTAR_1B9E";
+    //private String SSID="EMBEDDED";
     private String Password="123456789";
     //private String Password="6XGE8bA5Ka8oRqzhkfCm";
 
