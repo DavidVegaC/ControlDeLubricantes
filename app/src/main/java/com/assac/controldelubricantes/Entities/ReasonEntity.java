@@ -29,6 +29,10 @@ public class ReasonEntity {
     public String ValorConsulta;
     public String MensajeConsulta;
 
+    public ReasonEntity(){
+
+    }
+
     public ReasonEntity(int idSqlLite, int idReason, int idProduct, String reasonName, int reasonNumber, String registrationStatus) {
         this.idSqlLite = idSqlLite;
         IdReason = idReason;

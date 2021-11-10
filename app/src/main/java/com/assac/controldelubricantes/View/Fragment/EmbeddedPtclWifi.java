@@ -102,7 +102,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     Handler handlerSocket;
     final int handlerState = 0;
     //public static  String SERVER_IP = "192.168.1.98";
-    public static  String SERVER_IP = "192.168.1.7";
+    public static  String SERVER_IP = "192.168.1.9";
     //public static  String SERVER_IP = "192.168.4.22";
     public static  int SERVER_PORT = 2230;
 
@@ -189,6 +189,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     public int direccionResponse=0;
     public int numeroBombaResponse=0;
+    public String comentarioResponse="";
 
     //Animación de pestañeo
     private AnimationDrawable rocketAnimationCommunication;
@@ -605,7 +606,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                     break;
                 //ENVIAR DATA DE NFC LEÍDO
                 case EmbeddedPtcl.b_ext_enviar_data_nfc:
-                    longitud=EmbeddedPtcl.enviarDataNFC(bufferTransmision,ResponseDataDevice,direccionResponse,2,numeroBombaResponse);
+                    longitud=EmbeddedPtcl.enviarDataNFC(bufferTransmision,ResponseDataDevice,direccionResponse,2,numeroBombaResponse,comentarioResponse);
                     Log.v("", "" + "Longitud   "+ longitud);
                     Log.v("", "" + "Transmision   NFCData" + byteArrayToHexString(bufferTransmision,longitud));
                     break;
@@ -1583,7 +1584,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         //ly_nombre_manguera.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.bg_para_fondo_titulo_sin_flujo));
         //ly_nombre_producto.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.bg_para_fondo_titulo_sin_flujo));
 
-        iv_estado_abastecimiento.setImageResource(R.drawable.ic_fuel_no_flujo);
+        iv_estado_abastecimiento.setImageResource(R.drawable.ic_lubricante_no_flujo1);
 
         //txt_estado_abastecimiento.setText("No Flujo");
         //txt_estado_abastecimiento.setTextColor(ContextCompat.getColor(getActivity(),R.color.md_red_assac));
@@ -1626,7 +1627,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         //ly_nombre_manguera.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.bg_para_fondo_titulo_sin_flujo));
         //ly_nombre_producto.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.bg_para_fondo_titulo_sin_flujo));
 
-        iv_estado_abastecimiento.setImageResource(R.drawable.ic_fuel_no_flujo);
+        iv_estado_abastecimiento.setImageResource(R.drawable.ic_lubricante_no_flujo1);
 
         //txt_estado_abastecimiento.setText("Cierre Hook");
         //txt_estado_abastecimiento.setTextColor(ContextCompat.getColor(getActivity(),R.color.md_red_assac));
@@ -2047,7 +2048,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     }
 
-    //CARGAR ULTIMA TRANSACCION POR MANGUERA
+    //CARGAR ULTIMA TRANSACCION POR LUBRICANTE
     public void llenarDatosTransaccion(TransactionEntity entity, int indiceLayoutHose) {
         //**********************************************************
         int contador = 0;
@@ -2984,10 +2985,11 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     }
 
     @Override
-    public void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba) {
+    public void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba, String comentario) {
         ResponseDataDevice = responseDataDevice;
         direccionResponse = direccion;
         numeroBombaResponse = numeroBomba;
+        comentarioResponse = comentario;
 
         //longitud=EmbeddedPtcl.enviarDataFormularioWifi(bufferTransmision,1,8,2,dataFormEntity);
         //Log.v("", "" + "Transmision   FormData" + byteArrayToHexString(bufferTransmision,0x64));

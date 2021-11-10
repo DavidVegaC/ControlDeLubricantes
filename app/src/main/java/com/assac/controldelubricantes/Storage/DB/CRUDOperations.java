@@ -1249,7 +1249,7 @@ public class CRUDOperations {
                         MyDatabase.KEY_NAME_TB_PRODUCT,
                         MyDatabase.KEY_MEASUREMENT_UNIT_TB_PRODUCT,
                         MyDatabase.KEY_ELIPSE_CODE_TB_PRODUCT,
-                        MyDatabase.KEY_REGISTRATION_STATUS_TB_USER
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_PRODUCT
                 },
                 MyDatabase.KEY_ID_TB_PRODUCT + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
@@ -1308,6 +1308,473 @@ public class CRUDOperations {
         return totalCount;
     }
 
+    //TB_COMPARTMENT
+    public int addCompartment(CompartmentEntity compartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_COMPARTMENT, compartmentEntity.getIdCompartment());
+        values.put(MyDatabase.KEY_PRODUCT_TB_COMPARTMENT, compartmentEntity.getIdProduct());
+        values.put(MyDatabase.KEY_TYPE_TB_COMPARTMENT, compartmentEntity.getIdCompartmentType());
+        values.put(MyDatabase.KEY_NAME_TB_COMPARTMENT, compartmentEntity.getCompartmentName());
+        values.put(MyDatabase.KEY_CAPACITY_TB_COMPARTMENT, compartmentEntity.getCapacity());
+        values.put(MyDatabase.KEY_ALERT_CAPACITY_TB_COMPARTMENT, compartmentEntity.getAlertCapacity());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_COMPARTMENT, compartmentEntity.getRegistrationStatus());
+
+        int row = (int) db.insert(MyDatabase.TB_COMPARTMENT, null, values);
+        db.close();
+        return row;
+    }
+
+    public int updateCompartment(CompartmentEntity compartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_COMPARTMENT, compartmentEntity.getIdCompartment());
+        values.put(MyDatabase.KEY_PRODUCT_TB_COMPARTMENT, compartmentEntity.getIdProduct());
+        values.put(MyDatabase.KEY_TYPE_TB_COMPARTMENT, compartmentEntity.getIdCompartmentType());
+        values.put(MyDatabase.KEY_NAME_TB_COMPARTMENT, compartmentEntity.getCompartmentName());
+        values.put(MyDatabase.KEY_CAPACITY_TB_COMPARTMENT, compartmentEntity.getCapacity());
+        values.put(MyDatabase.KEY_ALERT_CAPACITY_TB_COMPARTMENT, compartmentEntity.getAlertCapacity());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_COMPARTMENT, compartmentEntity.getRegistrationStatus());
+
+        int row =db.update(MyDatabase.TB_COMPARTMENT,
+                values,
+                MyDatabase.KEY_ID_TB_COMPARTMENT+"=?",
+                new String[]{String.valueOf(compartmentEntity.getIdCompartment())});
+        db.close();
+
+        return row;
+    }
+
+    public int deleteCompartment(CompartmentEntity compartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int row= db.delete(MyDatabase.TB_COMPARTMENT,
+                MyDatabase.KEY_ID_TB_COMPARTMENT+"=?",
+                new String[]{String.valueOf(compartmentEntity.getIdCompartment())});
+        db.close();
+        return row;
+    }
+
+    public CompartmentEntity getCompartment(int id)
+    {
+        CompartmentEntity compartmentEntity= new CompartmentEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        Cursor cursor = db.query(MyDatabase.TB_COMPARTMENT,
+                new String[]{
+                        MyDatabase.KEY_ID_SQLLITE_TB_COMPARTMENT,
+                        MyDatabase.KEY_ID_TB_COMPARTMENT,
+                        MyDatabase.KEY_PRODUCT_TB_COMPARTMENT,
+                        MyDatabase.KEY_TYPE_TB_COMPARTMENT,
+                        MyDatabase.KEY_NAME_TB_COMPARTMENT,
+                        MyDatabase.KEY_CAPACITY_TB_COMPARTMENT,
+                        MyDatabase.KEY_ALERT_CAPACITY_TB_COMPARTMENT,
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_COMPARTMENT
+                },
+                MyDatabase.KEY_ID_TB_COMPARTMENT+ "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdCompartment = Integer.parseInt(cursor.getString(1));
+            int IdProduct = Integer.parseInt(cursor.getString(2));
+            int TypeIdCompartment = Integer.parseInt(cursor.getString(3));
+            String NameCompartment = cursor.getString(4);
+            double Capacity = Double.parseDouble(cursor.getString(5));
+            int AlertCapacity = Integer.parseInt(cursor.getString(6));
+            String RegistrationStatus = cursor.getString(7);
+
+            compartmentEntity= new CompartmentEntity(idSqlLite,
+                    IdCompartment, IdProduct, TypeIdCompartment, NameCompartment, Capacity, AlertCapacity,RegistrationStatus);
+        }
+
+        return compartmentEntity;
+    }
+
+    public List<CompartmentEntity> getAllCompartment()
+    {
+        List<CompartmentEntity> lst =new ArrayList<CompartmentEntity>();
+        String sql= "SELECT  * FROM " + MyDatabase.TB_COMPARTMENT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                CompartmentEntity compartmentEntity =new CompartmentEntity();
+                compartmentEntity.setIdSqlLite(Integer.parseInt(cursor.getString(0)));
+                compartmentEntity.setIdCompartment(Integer.parseInt(cursor.getString(1)));
+                compartmentEntity.setIdProduct(Integer.parseInt(cursor.getString(2)));
+                compartmentEntity.setIdCompartmentType(Integer.parseInt(cursor.getString(3)));
+                compartmentEntity.setCompartmentName(cursor.getString(4));
+                compartmentEntity.setCapacity(Double.parseDouble(cursor.getString(5)));
+                compartmentEntity.setAlertCapacity(Integer.parseInt(cursor.getString(6)));
+                compartmentEntity.setRegistrationStatus(cursor.getString(7));
+
+                lst.add(compartmentEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+    public int getCompartmentCount()
+    {
+        int totalCount = 0;
+        String sql= "SELECT * FROM "+MyDatabase.TB_COMPARTMENT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        totalCount = cursor.getCount();
+        cursor.close();
+
+        return totalCount;
+    }
+
+
+    //TB_REASON
+    public int addReason(ReasonEntity reasonEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_REASON, reasonEntity.getIdReason());
+        values.put(MyDatabase.KEY_PRODUCT_TB_REASON, reasonEntity.getIdProduct());
+        values.put(MyDatabase.KEY_NAME_TB_REASON, reasonEntity.getReasonName());
+        values.put(MyDatabase.KEY_NUMBER_TB_REASON, reasonEntity.getReasonNumber());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_REASON, reasonEntity.getRegistrationStatus());
+
+        int row = (int) db.insert(MyDatabase.TB_REASON, null, values);
+        db.close();
+        return row;
+    }
+
+    public int updateReason(ReasonEntity reasonEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_REASON, reasonEntity.getIdReason());
+        values.put(MyDatabase.KEY_PRODUCT_TB_REASON, reasonEntity.getIdProduct());
+        values.put(MyDatabase.KEY_NAME_TB_REASON, reasonEntity.getReasonName());
+        values.put(MyDatabase.KEY_NUMBER_TB_REASON, reasonEntity.getReasonNumber());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_REASON, reasonEntity.getRegistrationStatus());
+
+        int row =db.update(MyDatabase.TB_REASON,
+                values,
+                MyDatabase.KEY_ID_TB_REASON+"=?",
+                new String[]{String.valueOf(reasonEntity.getIdReason())});
+        db.close();
+
+        return row;
+    }
+
+    public int deleteReason(ReasonEntity reasonEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int row= db.delete(MyDatabase.TB_REASON,
+                MyDatabase.KEY_ID_TB_REASON+"=?",
+                new String[]{String.valueOf(reasonEntity.getIdReason())});
+        db.close();
+        return row;
+    }
+
+    public ReasonEntity getReason(int id)
+    {
+        ReasonEntity reasonEntity= new ReasonEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        Cursor cursor = db.query(MyDatabase.TB_REASON,
+                new String[]{
+                        MyDatabase.KEY_ID_SQLLITE_TB_REASON,
+                        MyDatabase.KEY_ID_TB_REASON,
+                        MyDatabase.KEY_PRODUCT_TB_REASON,
+                        MyDatabase.KEY_NAME_TB_REASON,
+                        MyDatabase.KEY_NUMBER_TB_REASON,
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_REASON
+                },
+                MyDatabase.KEY_ID_TB_REASON+ "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdReason = Integer.parseInt(cursor.getString(1));
+            int IdProduct = Integer.parseInt(cursor.getString(2));
+            String NameReason = cursor.getString(3);
+            int NumberReason = Integer.parseInt(cursor.getString(4));
+            String RegistrationStatus = cursor.getString(5);
+
+            reasonEntity= new ReasonEntity(idSqlLite,
+                    IdReason, IdProduct, NameReason, NumberReason, RegistrationStatus);
+        }
+
+        return reasonEntity;
+    }
+
+    public List<ReasonEntity> getAllReason()
+    {
+        List<ReasonEntity> lst =new ArrayList<ReasonEntity>();
+        String sql= "SELECT  * FROM " + MyDatabase.TB_REASON;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                ReasonEntity reasonEntity =new ReasonEntity();
+                reasonEntity.setIdSqlLite(Integer.parseInt(cursor.getString(0)));
+                reasonEntity.setIdReason(Integer.parseInt(cursor.getString(1)));
+                reasonEntity.setIdProduct(Integer.parseInt(cursor.getString(2)));
+                reasonEntity.setReasonName(cursor.getString(3));
+                reasonEntity.setReasonNumber(Integer.parseInt(cursor.getString(4)));
+                reasonEntity.setRegistrationStatus(cursor.getString(5));
+
+                lst.add(reasonEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+    public int getReasonCount()
+    {
+        int totalCount = 0;
+        String sql= "SELECT * FROM "+MyDatabase.TB_REASON;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        totalCount = cursor.getCount();
+        cursor.close();
+
+        return totalCount;
+    }
+
+    //TB_VEHICLE
+    public int addVehicle(VehicleEntity vehicleEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_VEHICLE, vehicleEntity.getIdVehicle());
+        values.put(MyDatabase.KEY_COMPANY_TB_VEHICLE, vehicleEntity.getIdCompany());
+        values.put(MyDatabase.KEY_MODEL_TB_VEHICLE, vehicleEntity.getIdModel());
+        values.put(MyDatabase.KEY_PLATE_TB_VEHICLE, vehicleEntity.getPlate());
+        values.put(MyDatabase.KEY_DESCRIPTION_TB_VEHICLE, vehicleEntity.getVehicleDescription());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_VEHICLE, vehicleEntity.getRegistrationStatus());
+
+        int row = (int) db.insert(MyDatabase.TB_VEHICLE, null, values);
+        db.close();
+        return row;
+    }
+
+    public int updateVehicle(VehicleEntity vehicleEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_VEHICLE, vehicleEntity.getIdVehicle());
+        values.put(MyDatabase.KEY_COMPANY_TB_VEHICLE, vehicleEntity.getIdCompany());
+        values.put(MyDatabase.KEY_MODEL_TB_VEHICLE, vehicleEntity.getIdModel());
+        values.put(MyDatabase.KEY_PLATE_TB_VEHICLE, vehicleEntity.getPlate());
+        values.put(MyDatabase.KEY_DESCRIPTION_TB_VEHICLE, vehicleEntity.getVehicleDescription());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_VEHICLE, vehicleEntity.getRegistrationStatus());
+
+        int row =db.update(MyDatabase.TB_VEHICLE,
+                values,
+                MyDatabase.KEY_ID_TB_VEHICLE+"=?",
+                new String[]{String.valueOf(vehicleEntity.getIdVehicle())});
+        db.close();
+
+        return row;
+    }
+
+    public int deleteVehicle(VehicleEntity vehicleEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int row= db.delete(MyDatabase.TB_VEHICLE,
+                MyDatabase.KEY_ID_TB_VEHICLE+"=?",
+                new String[]{String.valueOf(vehicleEntity.getIdVehicle())});
+        db.close();
+        return row;
+    }
+
+    public VehicleEntity getVehicle(int id)
+    {
+        VehicleEntity vehicleEntity= new VehicleEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        Cursor cursor = db.query(MyDatabase.TB_VEHICLE,
+                new String[]{
+                        MyDatabase.KEY_ID_SQLLITE_TB_VEHICLE,
+                        MyDatabase.KEY_ID_TB_VEHICLE,
+                        MyDatabase.KEY_COMPANY_TB_VEHICLE,
+                        MyDatabase.KEY_MODEL_TB_VEHICLE,
+                        MyDatabase.KEY_PLATE_TB_VEHICLE,
+                        MyDatabase.KEY_DESCRIPTION_TB_VEHICLE,
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_VEHICLE
+                },
+                MyDatabase.KEY_ID_TB_VEHICLE+ "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdVehicle = Integer.parseInt(cursor.getString(1));
+            int IdCompany = Integer.parseInt(cursor.getString(2));
+            int IdModel = Integer.parseInt(cursor.getString(3));
+            String Plate = cursor.getString(4);
+            String Description = cursor.getString(5);
+            String RegistrationStatus = cursor.getString(6);
+
+            vehicleEntity= new VehicleEntity(idSqlLite,
+                    IdVehicle, IdCompany, IdModel, Plate,Description, RegistrationStatus);
+        }
+
+        return vehicleEntity;
+    }
+
+    public List<VehicleEntity> getAllVehicle()
+    {
+        List<VehicleEntity> lst =new ArrayList<VehicleEntity>();
+        String sql= "SELECT  * FROM " + MyDatabase.TB_VEHICLE;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                VehicleEntity vehicleEntity =new VehicleEntity();
+                vehicleEntity.setIdSqlLite(Integer.parseInt(cursor.getString(0)));
+                vehicleEntity.setIdVehicle(Integer.parseInt(cursor.getString(1)));
+                vehicleEntity.setIdCompany(Integer.parseInt(cursor.getString(2)));
+                vehicleEntity.setIdModel(Integer.parseInt(cursor.getString(3)));
+                vehicleEntity.setPlate(cursor.getString(4));
+                vehicleEntity.setVehicleDescription(cursor.getString(5));
+                vehicleEntity.setRegistrationStatus(cursor.getString(6));
+
+                lst.add(vehicleEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+    public int getVehicleCount()
+    {
+        int totalCount = 0;
+        String sql= "SELECT * FROM "+MyDatabase.TB_VEHICLE;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        totalCount = cursor.getCount();
+        cursor.close();
+
+        return totalCount;
+    }
+
+    //TB_MODEL_COMPARTMENT
+    public int addModelCompartment(ModelCompartmentEntity modelCompartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase(); //modo escritura
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdModelCompartment());
+        values.put(MyDatabase.KEY_MODEL_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdModel());
+        values.put(MyDatabase.KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdCompartment());
+        values.put(MyDatabase.KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getCompartmentNumber());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_VEHICLE, modelCompartmentEntity.getRegistrationStatus());
+
+        int row = (int) db.insert(MyDatabase.TB_MODEL_COMPARTMENT, null, values);
+        db.close();
+        return row;
+    }
+
+    public int updateModelCompartment(ModelCompartmentEntity modelCompartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdModelCompartment());
+        values.put(MyDatabase.KEY_MODEL_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdModel());
+        values.put(MyDatabase.KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getIdCompartment());
+        values.put(MyDatabase.KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT, modelCompartmentEntity.getCompartmentNumber());
+        values.put(MyDatabase.KEY_REGISTRATION_STATUS_TB_VEHICLE, modelCompartmentEntity.getRegistrationStatus());
+
+        int row =db.update(MyDatabase.TB_MODEL_COMPARTMENT,
+                values,
+                MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT+"=?",
+                new String[]{String.valueOf(modelCompartmentEntity.getIdModelCompartment())});
+        db.close();
+
+        return row;
+    }
+
+    public int deleteModelCompartment(ModelCompartmentEntity modelCompartmentEntity)
+    {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int row= db.delete(MyDatabase.TB_MODEL_COMPARTMENT,
+                MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT+"=?",
+                new String[]{String.valueOf(modelCompartmentEntity.getIdModelCompartment())});
+        db.close();
+        return row;
+    }
+
+    public ModelCompartmentEntity getModelCompartment(int id)
+    {
+        ModelCompartmentEntity modelCompartmentEntity= new ModelCompartmentEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        Cursor cursor = db.query(MyDatabase.TB_MODEL_COMPARTMENT,
+                new String[]{
+                        MyDatabase.KEY_ID_SQLLITE_TB_MODEL_COMPARTMENT,
+                        MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT,
+                        MyDatabase.KEY_MODEL_TB_MODEL_COMPARTMENT,
+                        MyDatabase.KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT,
+                        MyDatabase.KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT,
+                        MyDatabase.KEY_REGISTRATION_STATUS_TB_MODEL_COMPARTMENT
+                },
+                MyDatabase.KEY_ID_TB_MODEL_COMPARTMENT+ "=?",
+                new String[]{String.valueOf(id)}, null, null, null);
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdModelCompartment = Integer.parseInt(cursor.getString(1));
+            int IdModel = Integer.parseInt(cursor.getString(2));
+            int IdCompartment = Integer.parseInt(cursor.getString(3));
+            int NumberCompartment = Integer.parseInt(cursor.getString(4));
+            String RegistrationStatus = cursor.getString(5);
+
+            modelCompartmentEntity= new ModelCompartmentEntity(idSqlLite,
+                    IdModelCompartment, IdModel, IdCompartment, NumberCompartment, RegistrationStatus);
+        }
+
+        return modelCompartmentEntity;
+    }
+
+    public List<ModelCompartmentEntity> getAllModelCompartment()
+    {
+        List<ModelCompartmentEntity> lst =new ArrayList<ModelCompartmentEntity>();
+        String sql= "SELECT  * FROM " + MyDatabase.TB_MODEL_COMPARTMENT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                ModelCompartmentEntity modelCompartmentEntity =new ModelCompartmentEntity();
+                modelCompartmentEntity.setIdSqlLite(Integer.parseInt(cursor.getString(0)));
+                modelCompartmentEntity.setIdModelCompartment(Integer.parseInt(cursor.getString(1)));
+                modelCompartmentEntity.setIdModel(Integer.parseInt(cursor.getString(2)));
+                modelCompartmentEntity.setIdCompartment(Integer.parseInt(cursor.getString(3)));
+                modelCompartmentEntity.setCompartmentNumber(Integer.parseInt(cursor.getString(4)));
+                modelCompartmentEntity.setRegistrationStatus(cursor.getString(5));
+
+                lst.add(modelCompartmentEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+    public int getModelCompartmentCount()
+    {
+        int totalCount = 0;
+        String sql= "SELECT * FROM "+MyDatabase.TB_MODEL_COMPARTMENT;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        totalCount = cursor.getCount();
+        cursor.close();
+
+        return totalCount;
+    }
 
     //TB_OPERATOR
     public int addOperator(OperatorEntity operatorEntity)

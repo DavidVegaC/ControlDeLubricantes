@@ -280,11 +280,11 @@ public class EmbeddedPtcl {
         return longitud;
     }
 
-    public static int enviarDataNFC(byte[] buffer, byte[] responseDataDevice, int direccion, int opcCodePrincipal, int numeroBomba){
+    public static int enviarDataNFC(byte[] buffer, byte[] responseDataDevice, int direccion, int opcCodePrincipal, int numeroBomba, String comentario){
         int longitud=64;
 
         buffer[0]=0x02;
-        buffer[1]=0x40;
+        buffer[1]=0x56;
         buffer[2]=0x00;
 
         buffer[3]=(byte)direccion;
@@ -357,8 +357,20 @@ public class EmbeddedPtcl {
         //LONGITUD
 
 
-        buffer[62]=(byte)crcEasyFuel2(buffer);
-        buffer[63]=0x03;
+        //RAZON
+
+        //MOTIVO
+
+        //COMENTARIO
+        char[] arrayComentario = comentario.toCharArray();
+        int c=64;
+        for(int i=0;i<arrayComentario.length;i++){
+            buffer[c] = (byte)arrayComentario[i];
+            c++;
+        }
+
+        buffer[84]=(byte)crcEasyFuel2(buffer);
+        buffer[85]=0x03;
         return longitud;
     }
 

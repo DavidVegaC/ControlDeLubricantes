@@ -4,7 +4,7 @@ import com.assac.controldelubricantes.Entities.DataFormEntity;
 
 public interface EmbeddedWifiListener {
 
-    void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba);
+    void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba, String comentario);
 
     void receiveDataForm(DataFormEntity dataFormEntity);
 

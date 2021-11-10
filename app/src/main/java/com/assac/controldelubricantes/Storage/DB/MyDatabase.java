@@ -22,6 +22,9 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String TB_PRODUCT = "tb_product";
     public static final String TB_COMPARTMENT = "tb_compartment";
     public static final String TB_REASON = "tb_reason";
+    public static final String TB_VEHICLE = "tb_vehicle";
+    public static final String TB_MODEL_COMPARTMENT = "tb_modelCompartment";
+
 
     public static final String TB_MIGRATION= "tb_migration";
     public static final String TB_MIGRATION_ERROR = "tb_migration_error";
@@ -122,6 +125,23 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String KEY_NAME_TB_REASON= "NameReason";
     public static final String KEY_NUMBER_TB_REASON = "NumberReason";
     public static final String KEY_REGISTRATION_STATUS_TB_REASON= "RegistrationStatus";
+
+    //Columnas de la tabla VEHICLE
+    public static final String KEY_ID_SQLLITE_TB_VEHICLE = "idSqlLiteVehicle";
+    public static final String KEY_ID_TB_VEHICLE = "IdVehicle";
+    public static final String KEY_COMPANY_TB_VEHICLE = "IdCompany";
+    public static final String KEY_MODEL_TB_VEHICLE= "IdModel";
+    public static final String KEY_PLATE_TB_VEHICLE = "Plate";
+    public static final String KEY_DESCRIPTION_TB_VEHICLE = "Description";
+    public static final String KEY_REGISTRATION_STATUS_TB_VEHICLE= "RegistrationStatus";
+
+    //Columnas de la tabla MODEL_COMPARTMENT
+    public static final String KEY_ID_SQLLITE_TB_MODEL_COMPARTMENT = "idSqlLiteModelCompartment";
+    public static final String KEY_ID_TB_MODEL_COMPARTMENT = "IdModelCompartment";
+    public static final String KEY_MODEL_TB_MODEL_COMPARTMENT = "IdModel";
+    public static final String KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT= "IdCompartment";
+    public static final String KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT = "NumberCompartment";
+    public static final String KEY_REGISTRATION_STATUS_TB_MODEL_COMPARTMENT= "RegistrationStatus";
 
     //Columnas de la Tabla MIGRACIÓN
     public static final String KEY_ID_SQLLITE_TB_MIGRATION = "IdSqlLiteMigration";
@@ -269,6 +289,25 @@ public class MyDatabase extends SQLiteOpenHelper {
                 + KEY_REGISTRATION_STATUS_TB_USER + " TEXT" + ")";
         db.execSQL(sqlReason);
 
+        String sqlVehicle= "CREATE TABLE " + TB_VEHICLE + "("
+                + KEY_ID_SQLLITE_TB_VEHICLE + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + KEY_ID_TB_VEHICLE + " INTEGER,"
+                + KEY_COMPANY_TB_VEHICLE + " INTEGER,"
+                + KEY_MODEL_TB_VEHICLE + " INTEGER,"
+                + KEY_PLATE_TB_VEHICLE + " TEXT,"
+                + KEY_DESCRIPTION_TB_VEHICLE + " TEXT,"
+                + KEY_REGISTRATION_STATUS_TB_VEHICLE + " TEXT" + ")";
+        db.execSQL(sqlVehicle);
+
+        String sqlModelCompartment= "CREATE TABLE " + TB_MODEL_COMPARTMENT + "("
+                + KEY_ID_SQLLITE_TB_MODEL_COMPARTMENT + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
+                + KEY_ID_TB_MODEL_COMPARTMENT + " INTEGER,"
+                + KEY_MODEL_TB_MODEL_COMPARTMENT + " INTEGER,"
+                + KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT + " INTEGER,"
+                + KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT + " INTEGER,"
+                + KEY_REGISTRATION_STATUS_TB_MODEL_COMPARTMENT + " TEXT" + ")";
+        db.execSQL(sqlModelCompartment);
+
         String sqlMigrationError= "CREATE TABLE " + TB_MIGRATION_ERROR + "("
                 + KEY_ID_SQLLITE_TB_ERROR+ " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,"
                 + KEY_MIGRATION_START_DATE_TB_ERROR + " TEXT,"
@@ -377,3 +416,4 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.execSQL(sqlDropWorkShift);
     }
 }
+

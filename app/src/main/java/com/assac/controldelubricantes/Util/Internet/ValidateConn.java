@@ -162,6 +162,17 @@ public class ValidateConn  {
                         //Rest.receiveOperatorData(mmigrationStartDate);
                         //Receive User's from Server
                         Rest.receiveUserData(mmigrationStartDate);
+                        //Receive Vehicle's from Server
+                        Rest.receiveVehicleData(mmigrationStartDate);
+                        //Receive Compartment's from Server
+                        Rest.receiveCompartmentData(mmigrationStartDate);
+                        //Receive ModelCompartment's from Server
+                        Rest.receiveModelCompartmentData(mmigrationStartDate);
+                        //Receive Product's from Server
+                        Rest.receiveProductData(mmigrationStartDate);
+                        //Receive Reason's from Server
+                        Rest.receiveReasonData(mmigrationStartDate);
+
                         break;
 
                 }

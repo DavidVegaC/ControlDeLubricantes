@@ -275,7 +275,7 @@ public class FormDialogTransaction2 extends AlertDialog {
                                 break;
                             default:
                                 if(!validarDatosVehiculo()){
-                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba);
+                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba,"");
                                     dismiss();
                                 }
                                 break;

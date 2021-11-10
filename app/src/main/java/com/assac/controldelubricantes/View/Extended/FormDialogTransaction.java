@@ -150,7 +150,6 @@ public class FormDialogTransaction extends AlertDialog {
         lyConductorQR.setBackgroundResource(R.drawable.bg_blink_qr);
         rocketAnimationQR = (AnimationDrawable) lyConductorQR.getBackground();
 
-
         switch (dataFormEntity.getTag()) {
             case "A":
             case "E":
@@ -167,8 +166,6 @@ public class FormDialogTransaction extends AlertDialog {
                     lyPlacaNFC.setVisibility(View.VISIBLE);
                     break;
         }
-
-
 
         loadHelper();
 
@@ -219,7 +216,6 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyComentario.setVisibility(View.VISIBLE);
                                     etValidacion.setText("Comentario máximo: 20 caracteres.");
                                 }
-
                             }else if (lyHorometro.getVisibility()==View.VISIBLE){
                                 if (dataFormEntity.isSolicitaPreseteo()) {
                                     tvTitulo.setText("PRESETEO");
@@ -265,12 +261,20 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyConductor.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.VISIBLE);
                                     etValidacion.setText("Comentario máximo: 20 caracteres.");
-                            }else if (lyComentario.getVisibility()==View.VISIBLE){
-                                embeddedWifiListener.receiveDataForm(dataFormEntity);
-                                dismiss();
-                            }
-                            else{
-                                embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba);
+                            } else if (lyPlaca.getVisibility()==View.VISIBLE){
+                                tvTitulo.setText("COMENTARIO");
+                                lyPlaca.setVisibility(View.GONE);
+                                lyKilometraje.setVisibility(View.GONE);
+                                lyConductor.setVisibility(View.GONE);
+                                lyComentario.setVisibility(View.VISIBLE);
+                                etValidacion.setText("Comentario máximo: 20 caracteres.");
+                            } else if (lyComentario.getVisibility()==View.VISIBLE){
+                                if(dataFormEntity.getTag().equals(""))
+                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba, dataFormEntity.comentario);
+                                else
+                                    embeddedWifiListener.receiveDataForm(dataFormEntity);
+
+
                                 dismiss();
                             }
 

@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements MainListener {
         initComponent();
     }
 
-
-
     private void initComponent(){
         btnEstacion = findViewById(R.id.btnEstacion);
         btnDuplicadoTicket = findViewById(R.id.btnDuplicadoTicket);

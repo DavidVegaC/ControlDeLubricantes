@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.assac.controldelubricantes.Entities.CompartmentEntity;
+import com.assac.controldelubricantes.Entities.ModelCompartmentEntity;
 import com.assac.controldelubricantes.Entities.OperatorEntity;
+import com.assac.controldelubricantes.Entities.ProductEntity;
+import com.assac.controldelubricantes.Entities.ReasonEntity;
 import com.assac.controldelubricantes.Entities.UserEntity;
+import com.assac.controldelubricantes.Entities.VehicleEntity;
 import com.assac.controldelubricantes.Listeners.LoginListener;
 import com.assac.controldelubricantes.R;
 import com.assac.controldelubricantes.Storage.DB.CRUDOperations;
@@ -64,6 +70,11 @@ public class LoginFragment extends Fragment {
     private Button btnBuscarUsuario;
     private Button btnActualizarUsuario;
     private Button btnConsumirServicio;
+    private Button btnListarRazones;
+    private Button btnListarProductos;
+    private Button btnListarCompartimientos;
+    private Button btnListarVehiculos;
+    private Button btnListarMCompartimientos;
     private NetworkUtil networkUtil;
     private CRUDOperations crudOperations;
     private TextView txtIdDispositivoFL;
@@ -134,6 +145,13 @@ public class LoginFragment extends Fragment {
         btnBuscarUsuario = (Button) getActivity().findViewById(R.id.btnBuscarUsuario);
         btnActualizarUsuario = (Button) getActivity().findViewById(R.id.btnActualizarUsuario);
         btnConsumirServicio = (Button) getActivity().findViewById(R.id.btnConsumirServicio);
+
+        btnListarProductos = (Button) getActivity().findViewById(R.id.btnListarProductos);
+        btnListarCompartimientos  = (Button) getActivity().findViewById(R.id.btnListarCompartimientos);
+        btnListarRazones= (Button) getActivity().findViewById(R.id.btnListarRazones);
+        btnListarVehiculos= (Button) getActivity().findViewById(R.id.btnListarVehiculos);
+        btnListarMCompartimientos= (Button) getActivity().findViewById(R.id.btnListarMCompartimientos);
+
         txtIdDispositivoFL = (TextView) getActivity().findViewById(R.id.txtIdDispositivoFL);
         networkUtil = new NetworkUtil(getActivity());
         crudOperations = new CRUDOperations(new MyDatabase(getActivity()));
@@ -143,13 +161,124 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-
             }
         });
 
         btnListarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+            }
+        });
+
+        btnListarProductos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ProductEntity> productEntities = new ArrayList<>();
+
+                productEntities = crudOperations.getAllProduct();
+
+                String productString="";
+
+                for(int i =0;i<productEntities.size();i++){
+                    productString+="ID: "+productEntities.get(i).getIdProduct()+" \n";
+                    productString+="Number: "+productEntities.get(i).getNumberProduct()+" \n";
+                    productString+="Name: "+productEntities.get(i).getProductName()+" \n";
+                    productString+="Measure: "+productEntities.get(i).getMeasurementUnit()+" \n";
+                    productString+="Elipse: "+productEntities.get(i).getElipseCode()+" \n";
+                    productString+="Registration Status: "+productEntities.get(i).getRegistrationStatus()+" \n\n";
+                }
+
+                Log.v("PRODUCTS", productString);
+
+            }
+        });
+
+        btnListarRazones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ReasonEntity> reasonEntities = new ArrayList<>();
+
+                reasonEntities = crudOperations.getAllReason();
+
+                String reasonString="";
+
+                for(int i =0;i<reasonEntities.size();i++){
+                    reasonString+="ID: "+reasonEntities.get(i).getIdReason()+" \n";
+                    reasonString+="Product: "+reasonEntities.get(i).getIdProduct()+" \n";
+                    reasonString+="Name: "+reasonEntities.get(i).getReasonName()+" \n";
+                    reasonString+="Number: "+reasonEntities.get(i).getReasonNumber()+" \n";
+                    reasonString+="Registration Status: "+reasonEntities.get(i).getRegistrationStatus()+" \n\n";
+                }
+
+                Log.v("RAZONES", reasonString);
+
+            }
+        });
+
+        btnListarCompartimientos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<CompartmentEntity> compartmentEntities = new ArrayList<>();
+
+                compartmentEntities = crudOperations.getAllCompartment();
+
+                String compartmentString="";
+
+                for(int i =0;i<compartmentEntities.size();i++){
+                    compartmentString+="ID: "+compartmentEntities.get(i).getIdCompartment()+" \n";
+                    compartmentString+="Product: "+compartmentEntities.get(i).getIdProduct()+" \n";
+                    compartmentString+="Type: "+compartmentEntities.get(i).getIdCompartmentType()+" \n";
+                    compartmentString+="Nombre: "+compartmentEntities.get(i).getCompartmentName()+" \n";
+                    compartmentString+="Registration Status: "+compartmentEntities.get(i).getRegistrationStatus()+" \n\n";
+                }
+
+                Log.v("COMPARTIMIENTOS", compartmentString);
+
+            }
+        });
+
+        btnListarVehiculos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<VehicleEntity> vehicleEntities = new ArrayList<>();
+
+                vehicleEntities = crudOperations.getAllVehicle();
+
+                String vehicleString="";
+
+                for(int i =0;i<vehicleEntities.size();i++){
+                    vehicleString+="ID: "+vehicleEntities.get(i).getIdVehicle()+" \n";
+                    vehicleString+="Company: "+vehicleEntities.get(i).getIdCompany()+" \n";
+                    vehicleString+="Model: "+vehicleEntities.get(i).getIdModel()+" \n";
+                    vehicleString+="Plate: "+vehicleEntities.get(i).getPlate()+" \n";
+                    vehicleString+="Descripcion: "+vehicleEntities.get(i).getVehicleDescription()+" \n";
+                    vehicleString+="Registration Status: "+vehicleEntities.get(i).getRegistrationStatus()+" \n\n";
+                }
+
+                Log.v("VEHICULOS", vehicleString);
+
+            }
+        });
+
+        btnListarMCompartimientos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ModelCompartmentEntity> modelCompartmentEntities = new ArrayList<>();
+
+                modelCompartmentEntities = crudOperations.getAllModelCompartment();
+
+                String modelCompartmentString="";
+
+                for(int i =0;i<modelCompartmentEntities.size();i++){
+                    modelCompartmentString+="ID: "+modelCompartmentEntities.get(i).getIdCompartment()+" \n";
+                    modelCompartmentString+="Model: "+modelCompartmentEntities.get(i).getIdModel()+" \n";
+                    modelCompartmentString+="Id Compartimiento: "+modelCompartmentEntities.get(i).getIdCompartment()+" \n";
+                    modelCompartmentString+="Number Compartimiento: "+modelCompartmentEntities.get(i).getCompartmentNumber()+" \n";
+                    modelCompartmentString+="Registration Status: "+modelCompartmentEntities.get(i).getRegistrationStatus()+" \n\n";
+                }
+
+                Log.v("MODELOS DE COMPARTIMIENTOS", modelCompartmentString);
 
             }
         });

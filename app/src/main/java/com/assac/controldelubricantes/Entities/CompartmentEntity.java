@@ -31,6 +31,10 @@ public class CompartmentEntity {
     public String ValorConsulta;
     public String MensajeConsulta;
 
+    public CompartmentEntity(){
+
+    }
+
     public CompartmentEntity(int idSqlLite, int idCompartment, int idProduct, int idCompartmentType, String compartmentName, double capacity, int alertCapacity, String registrationStatus) {
         this.idSqlLite = idSqlLite;
         IdCompartment = idCompartment;
