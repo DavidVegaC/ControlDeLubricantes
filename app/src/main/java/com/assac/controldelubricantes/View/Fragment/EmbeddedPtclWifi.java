@@ -1323,7 +1323,10 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         if(pEstadoActual == EmbeddedPtcl.v_estado_sin_abastecimiento){
             cambiarEstadoSinAbastecimiento(indiceLayoutHose);
         } else if(pEstadoActual == EmbeddedPtcl.v_estado_inicia_abastecimiento){
-            cambiarEstadoIniciaAbastecimiento(indiceLayoutHose);
+            if(bufferRecepcion[9] == EmbeddedPtcl.v_estado_autoriza_abastecimiento || bufferRecepcion[9] == EmbeddedPtcl.v_estado_termina_abastecimiento)
+                cambiarEstadoCierreHook(indiceLayoutHose);
+            else
+                cambiarEstadoIniciaAbastecimiento(indiceLayoutHose);
         }else if(pEstadoActual == EmbeddedPtcl.v_estado_autoriza_abastecimiento){
             cambiarEstadoAutorizarAbastecimiento(indiceLayoutHose);
         } else if(pEstadoActual == EmbeddedPtcl.v_estado_termina_abastecimiento){
@@ -1563,8 +1566,6 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void cambiarEstadoSinFlujo(int indiceLayoutHose){
 
-
-
         ly_cuadrante = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante);
         ly_cuadrante_estado_disponible = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante_estado_disponible);
         ly_cuadrante_estado_llamando = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante_estado_llamando);
@@ -1608,6 +1609,11 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void cambiarEstadoCierreHook(int indiceLayoutHose){
 
+        if(layoutsHose.get(indiceLayoutHose).formDialogTransaction!=null){
+            if(layoutsHose.get(indiceLayoutHose).formDialogTransaction.isShowing())
+                layoutsHose.get(indiceLayoutHose).formDialogTransaction.dismiss();
+        }
+
         ly_cuadrante = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante);
         ly_cuadrante_estado_disponible = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante_estado_disponible);
         ly_cuadrante_estado_llamando = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante_estado_llamando);
@@ -1640,6 +1646,13 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
         //txt_estado_abastecimiento.setText("Cierre Hook");
         //txt_estado_abastecimiento.setTextColor(ContextCompat.getColor(getActivity(),R.color.md_red_assac));
+
+        ly_cuadrante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mostrarMensajeUsuario("Favor de cerrar el Hook.");
+            }
+        });
 
     }
 
@@ -2121,7 +2134,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         entity.setEstadoActual(estadoActual);
 
         Log.v("Estado", String.valueOf(entity.getEstadoActual()));
-        cambioEstado(indiceLayoutHose, estadoActual);
+        //cambioEstado(indiceLayoutHose, estadoActual);
 
         //**********************************************************
         //Capturar Nro Transaccion
@@ -2585,12 +2598,14 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         txt_ultimo_galon_p2 = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.txt_ultimo_galon_p2);
         txt_ultimo_ticket_p2= layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.txt_ultimo_ticket_p2);
 
+
         txt_producto.setText(entity.getNombreProducto());
         txt_placa.setText(entity.getPlaca());
         txt_galones.setText(entity.getVolumen());
         txt_ultimo_galon_p2.setText(entity.getVolumen());
         txt_ultimo_ticket.setText(entity.getNumeroTransaccion());
         txt_ultimo_ticket_p2.setText(entity.getNumeroTransaccion());
+
 
         if (!nroTransaccion.equals("0"))
             guardarTransaccionBD(entity);
@@ -3156,6 +3171,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
         Hose hose = getHoseByNumber(numeroBombaRead);
 
+        Log.v("Producto", ""+hose.getIdProduct());
+
         if(productoResponse != hose.getIdProduct())
             mostrarMensajeUsuario("Producto no coincide con esta manguera.");
         else{
@@ -3176,7 +3193,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             if(vehicleEntity.getIdSqlLite()!= 0){
                 List<CompartmentEntity> compartmentEntities = new ArrayList<>();
 
-                Log.v("Compartimeinto",""+responseDataDevice[30]);
+                Log.v("Compartimiento",""+responseDataDevice[30]);
 
                 compartmentEntities = crudOperations.getCompartmentForPlate(placa,responseDataDevice[30]);
 
@@ -3188,7 +3205,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                     mostrarMensajeUsuario("Compartimiento no conforme con el modelo del vehiculo.");
                 }
             }else{
-                mostrarMensajeUsuario("El vehiculo con placa "+placa+" no se encuentra regustrado.");
+                mostrarMensajeUsuario("El vehiculo con placa "+placa+" no se encuentra registrado.");
             }
 
 

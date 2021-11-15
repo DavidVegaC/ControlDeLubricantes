@@ -211,7 +211,7 @@ public class LoginFragment extends Fragment {
                     reasonString+="Registration Status: "+reasonEntities.get(i).getRegistrationStatus()+" \n\n";
                 }*/
 
-                reasonEntities = crudOperations.getReasonsForNumberProduct(20);
+                //reasonEntities = crudOperations.getReasonsForNumberProduct(13);
 
                 String reasonString="";
 

@@ -246,22 +246,7 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyConductor.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
 
-
-                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
-
-                                    if(reasonEntities.size()>0){
-                                        ArrayList<String> strings = new ArrayList<>();
-                                        for(int i=0; i<reasonEntities.size(); i++){
-                                            strings.add(reasonEntities.get(i).getReasonName());
-                                        }
-                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
-                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
-                                        spRazones.setAdapter(stringArrayAdapter);
-                                    }else
-                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
-
-                                    lyRazon.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Seleccione una razón.");
+                                    mostrarRazones();
 
                                 }
                             }else if (lyHorometro.getVisibility()==View.VISIBLE){
@@ -287,21 +272,8 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
-                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
 
-                                    if(reasonEntities.size()>0){
-                                        ArrayList<String> strings = new ArrayList<>();
-                                        for(int i=0; i<reasonEntities.size(); i++){
-                                            strings.add(reasonEntities.get(i).getReasonName());
-                                        }
-                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
-                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
-                                        spRazones.setAdapter(stringArrayAdapter);
-                                    }else
-                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
-
-                                    lyRazon.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Seleccione una razón.");
+                                    mostrarRazones();
                                 }
                             }else if (lyPreSeteo.getVisibility()==View.VISIBLE){
                                 if (dataFormEntity.isSolicitaConductor()) {
@@ -321,21 +293,8 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
-                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
 
-                                    if(reasonEntities.size()>0){
-                                        ArrayList<String> strings = new ArrayList<>();
-                                        for(int i=0; i<reasonEntities.size(); i++){
-                                            strings.add(reasonEntities.get(i).getReasonName());
-                                        }
-                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
-                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
-                                        spRazones.setAdapter(stringArrayAdapter);
-                                    }else
-                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
-
-                                    lyRazon.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Seleccione una razón.");
+                                    mostrarRazones();
                                 }
                             }else if (lyConductor.getVisibility()==View.VISIBLE){
                                     validarConductor=true;
@@ -346,21 +305,8 @@ public class FormDialogTransaction extends AlertDialog {
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
-                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
 
-                                    if(reasonEntities.size()>0){
-                                        ArrayList<String> strings = new ArrayList<>();
-                                        for(int i=0; i<reasonEntities.size(); i++){
-                                            strings.add(reasonEntities.get(i).getReasonName());
-                                        }
-                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
-                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
-                                        spRazones.setAdapter(stringArrayAdapter);
-                                    }else
-                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
-
-                                    lyRazon.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Seleccione una razón.");
+                                    mostrarRazones();
                             } else if (lyPlaca.getVisibility()==View.VISIBLE){
                                 tvTitulo.setText("RAZONES");
                                 lyPlaca.setVisibility(View.GONE);
@@ -370,21 +316,8 @@ public class FormDialogTransaction extends AlertDialog {
                                 lyConductor.setVisibility(View.GONE);
                                 lyComentario.setVisibility(View.GONE);
 
-                                reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
 
-                                if(reasonEntities.size()>0){
-                                    ArrayList<String> strings = new ArrayList<>();
-                                    for(int i=0; i<reasonEntities.size(); i++){
-                                        strings.add(reasonEntities.get(i).getReasonName());
-                                    }
-                                    ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
-                                    stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
-                                    spRazones.setAdapter(stringArrayAdapter);
-                                }else
-                                    Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
-
-                                lyRazon.setVisibility(View.VISIBLE);
-                                etValidacion.setText("Seleccione una razón.");
+                                mostrarRazones();
                             } else if (lyRazon.getVisibility()==View.VISIBLE){
                                 tvTitulo.setText("COMENTARIO");
                                 lyPlaca.setVisibility(View.GONE);
@@ -650,6 +583,24 @@ public class FormDialogTransaction extends AlertDialog {
         etValidacion.setText(ErrorIdConductor);
         //messageErrorIdDriver.setText(ErrorIdConductor);
         //messageErrorIdDriver.setVisibility(View.VISIBLE);
+    }
+
+    private void mostrarRazones(){
+        reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+        if(reasonEntities.size()>0){
+            ArrayList<String> strings = new ArrayList<>();
+            for(int i=0; i<reasonEntities.size(); i++){
+                strings.add(reasonEntities.get(i).getReasonName());
+            }
+            ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_1,strings);
+            stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+            spRazones.setAdapter(stringArrayAdapter);
+        }else
+            Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+        lyRazon.setVisibility(View.VISIBLE);
+        etValidacion.setText("Seleccione una razón.");
     }
 
 }

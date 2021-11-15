@@ -508,7 +508,7 @@ public class Rest {
                     if (response.code() == 200) {
 
                         List<CompartmentEntity> compartmentEntities = response.body();
-                        if (compartmentEntities.size() > 0 && compartmentEntities.get(0).getIdProduct() > 0) {
+                        if (compartmentEntities.size() > 0 && compartmentEntities.get(0).getIdCompartment() > 0) {
 
                             for (int i = 0; i < compartmentEntities.size(); i++) {
                                 CompartmentEntity compartmentEntity = new CompartmentEntity();
@@ -640,7 +640,7 @@ public class Rest {
                     if (response.code() == 200) {
 
                         List<ReasonEntity> reasonEntities = response.body();
-                        if (reasonEntities.size() > 0 && reasonEntities.get(0).getIdProduct() > 0) {
+                        if (reasonEntities.size() > 0 && reasonEntities.get(0).getIdReason() > 0) {
 
                             for (int i = 0; i < reasonEntities.size(); i++) {
                                 ReasonEntity reasonEntity = new ReasonEntity();

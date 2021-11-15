@@ -351,7 +351,7 @@
             <LinearLayout
                 android:id="@+id/lyRazon"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dp"
                 android:visibility="gone"
@@ -359,14 +359,14 @@
                 >
 
                 <LinearLayout
-                    android:layout_width="300dp"
+                    android:layout_width="350dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_para_textview"
                     android:gravity="center">
 
                     <Spinner
                         android:id="@+id/spRazones"
-                        android:layout_width="300dp"
+                        android:layout_width="350dp"
                         android:layout_height="match_parent"
                         android:layout_marginVertical="2dp"
                         android:layout_marginStart="3dp"
@@ -424,7 +424,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
 
 
             <!-- SECCIÓN COMENTARIO -->

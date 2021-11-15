@@ -1476,7 +1476,7 @@ public class CRUDOperations {
         return totalCount;
     }
 
-    public List<CompartmentEntity> getCompartmentForPlate(String plate, int idCompartment)
+    public List<CompartmentEntity> getCompartmentForPlate(String plate, int numberCompartment)
     {
         List<CompartmentEntity> lst =new ArrayList<CompartmentEntity>();
 
@@ -1488,7 +1488,7 @@ public class CRUDOperations {
                 " FROM "+ MyDatabase.TB_MODEL_COMPARTMENT +" MC "+
                 " LEFT JOIN "+ MyDatabase.TB_COMPARTMENT+" C ON C." +MyDatabase.KEY_ID_TB_COMPARTMENT+" = MC."+MyDatabase.KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT + " "+
                 " LEFT JOIN "+ MyDatabase.TB_VEHICLE+" V ON V." +MyDatabase.KEY_MODEL_TB_VEHICLE+" = MC."+MyDatabase.KEY_MODEL_TB_MODEL_COMPARTMENT + " "+
-                " WHERE C."+MyDatabase.KEY_ID_TB_COMPARTMENT+" = "+idCompartment + " AND V."+MyDatabase.KEY_PLATE_TB_VEHICLE+ " = '"+plate+"' ";
+                " WHERE MC."+MyDatabase.KEY_NUMBER_COMPARTMENT_TB_MODEL_COMPARTMENT+" = "+numberCompartment + " AND V."+MyDatabase.KEY_PLATE_TB_VEHICLE+ " = '"+plate+"' ";
 
         Log.v("SQL",sql);
 
@@ -1506,7 +1506,6 @@ public class CRUDOperations {
         }
         return lst;
     }
-
 
     //TB_REASON
     public int addReason(ReasonEntity reasonEntity)
@@ -1653,8 +1652,6 @@ public class CRUDOperations {
         }
         return lst;
     }
-
-
 
     //TB_VEHICLE
     public int addVehicle(VehicleEntity vehicleEntity)
