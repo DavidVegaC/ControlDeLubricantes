@@ -33,12 +33,14 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 
+import com.assac.controldelubricantes.Entities.CompartmentEntity;
 import com.assac.controldelubricantes.Entities.DataFormEntity;
 import com.assac.controldelubricantes.Entities.Hose;
 import com.assac.controldelubricantes.Entities.InformationHMIEntity;
 import com.assac.controldelubricantes.Entities.LayoutHoseEntity;
 import com.assac.controldelubricantes.Entities.Maestros;
 import com.assac.controldelubricantes.Entities.TransactionEntity;
+import com.assac.controldelubricantes.Entities.VehicleEntity;
 import com.assac.controldelubricantes.Listeners.EmbeddedWifiListener;
 import com.assac.controldelubricantes.Listeners.MainListener;
 import com.assac.controldelubricantes.R;
@@ -66,6 +68,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.logging.HttpLoggingInterceptor;
 
 import static com.assac.controldelubricantes.Util.Utils.byteArrayToHexInt;
 import static com.assac.controldelubricantes.Util.Utils.byteArrayToHexInt2;
@@ -95,6 +99,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     //variables prueba con handler
     private int indiceBombaRead;
+    private int numeroBombaRead;
 
     DataFormEntity DataFormEntity;
 
@@ -102,8 +107,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     Handler handlerSocket;
     final int handlerState = 0;
     //public static  String SERVER_IP = "192.168.1.98";
-    public static  String SERVER_IP = "192.168.1.9";
-    //public static  String SERVER_IP = "192.168.4.22";
+    //public static  String SERVER_IP = "192.168.1.9";
+    public static  String SERVER_IP = "192.168.4.22";
     public static  int SERVER_PORT = 2230;
 
     private ClientTCPThread clientTCPThread;
@@ -132,8 +137,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     private NetworkUtil networkUtil;
 
     //private String SSID="TP-LINK_AP_F2D8";
-    private String SSID="MOVISTAR_1B9E";
-    //private String SSID="EMBEDDED";
+    //private String SSID="MOVISTAR_1B9E";
+    private String SSID="EMBEDDED";
     private String Password="123456789";
     //private String Password="6XGE8bA5Ka8oRqzhkfCm";
 
@@ -190,6 +195,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     public int direccionResponse=0;
     public int numeroBombaResponse=0;
     public String comentarioResponse="";
+    public int razonResponse = 0;
 
     //Animación de pestañeo
     private AnimationDrawable rocketAnimationCommunication;
@@ -606,7 +612,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                     break;
                 //ENVIAR DATA DE NFC LEÍDO
                 case EmbeddedPtcl.b_ext_enviar_data_nfc:
-                    longitud=EmbeddedPtcl.enviarDataNFC(bufferTransmision,ResponseDataDevice,direccionResponse,2,numeroBombaResponse,comentarioResponse);
+                    longitud=EmbeddedPtcl.enviarDataNFC(bufferTransmision,ResponseDataDevice,direccionResponse,2,numeroBombaResponse,comentarioResponse, razonResponse);
                     Log.v("", "" + "Longitud   "+ longitud);
                     Log.v("", "" + "Transmision   NFCData" + byteArrayToHexString(bufferTransmision,longitud));
                     break;
@@ -1101,7 +1107,9 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             int[] idProducto = new int[1];
             idProducto[0] = bufferRecepcion[pIinicial + 1];
             Log.v("BOMBA "+ i, "IDPRODUCTO- " + idProducto[0]);
-            transactionEntity.setIdProducto(Integer.parseInt(byteArrayToHexIntGeneral(idProducto,1)));
+            int NumberProduct = Integer.parseInt(byteArrayToHexIntGeneral(idProducto,1));
+            transactionEntity.setIdProducto(NumberProduct);
+            hose.setIdProduct(NumberProduct);
 
             //**********************************************************
             //Capturar cantidadDecimales
@@ -1210,7 +1218,6 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     //GENERAR MANGUERAS DINAMICAMENTE SEGÚN CANTIDAD DE MANGUERAS
 
-
     /*
     @SuppressLint("InlinedApi")
     private void agregarImagenEstaciones()
@@ -1274,7 +1281,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                 c=0;
                 parent = new LinearLayout(rootView.getContext());
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0, 2, 0, 12);
+                layoutParams.setMargins(0, 4, 0, 14);
                 parent.setLayoutParams(layoutParams);
                 parent.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -1555,6 +1562,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void cambiarEstadoSinFlujo(int indiceLayoutHose){
+
+
 
         ly_cuadrante = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante);
         ly_cuadrante_estado_disponible = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.ly_cuadrante_estado_disponible);
@@ -1882,10 +1891,51 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             Log.v("Tipo Error Preseteo", "" + entity.getTipoErrorPreseteo());
 
             //**********************************************************
+            //Capturar Razon
+            int[] tramaRazon = new int[1];
+            contador = 0;
+            for (int i = 93; i <= 93; i++) {
+                tramaRazon[contador] = bufferRecepcion[i];
+                contador++;
+            }
+
+            int razon = Integer.parseInt(byteArrayToHexIntGeneral(tramaRazon, 1));
+            entity.setRazon(razon);
+
+            Log.v("Razon", "" + entity.getRazon());
+
+            //**********************************************************
+            //Capturar Motivo
+            int[] tramaMotivo = new int[1];
+            contador = 0;
+            for (int i = 94; i <= 94; i++) {
+                tramaMotivo[contador] = bufferRecepcion[i];
+                contador++;
+            }
+
+            int motivo = Integer.parseInt(byteArrayToHexIntGeneral(tramaMotivo, 1));
+            entity.setMotivo(motivo);
+
+            Log.v("Motivo", "" + entity.getMotivo());
+
+            //**********************************************************
+            //Capturar Comentario
+
+            int[] tramaComentario = new int[10];
+            int c = 0;
+            for(int i = 95; i<= 114;  i++){
+                tramaComentario[c] = bufferRecepcion[i];
+                c++;
+            }
+            entity.setComentario(hexToAscii(byteArrayToHexString(tramaComentario,tramaComentario.length)).trim());
+
+            Log.v("Comentario", "" + entity.getComentario());
+
+            //**********************************************************
             //Capturar Volumen Autorizado
             int[] tramaVolumenAutorizado = new int[2];
             contador = 0;
-            for (int i = 93; i <= 94; i++) {
+            for (int i = 115; i <= 116; i++) {
                 tramaVolumenAutorizado[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1897,7 +1947,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Volumen Aceptado
             int[] tramaVolumenAceptado = new int[2];
             contador = 0;
-            for (int i = 95; i <= 96; i++) {
+            for (int i = 117; i <= 118; i++) {
                 tramaVolumenAceptado[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1909,7 +1959,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Código Cliente
             int[] tramaCodigoCliente = new int[2];
             contador = 0;
-            for (int i = 102; i <= 103; i++) {
+            for (int i = 124; i <= 125; i++) {
                 tramaCodigoCliente[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1921,7 +1971,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar codigo area
             int[] tramaCodigoArea = new int[1];
             contador = 0;
-            for (int i = 104; i <= 104; i++) {
+            for (int i = 126; i <= 126; i++) {
                 tramaCodigoArea[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1935,7 +1985,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar tipo TAG
             int[] tramaTipoTAG = new int[1];
             contador = 0;
-            for (int i = 105; i <= 105; i++) {
+            for (int i = 127; i <= 127; i++) {
                 tramaTipoTAG[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1949,7 +1999,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Volumen Abastecido
             int[] tramaVolumen = new int[9];
             contador = 0;
-            for (int i = 106; i <= 114; i++) {
+            for (int i = 128; i <= 136; i++) {
                 tramaVolumen[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1967,7 +2017,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Temperatura
             int[] tramaTemperatura = new int[5];
             contador = 0;
-            for (int i = 115; i <= 119; i++) {
+            for (int i = 137; i <= 141; i++) {
                 tramaTemperatura[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -1978,17 +2028,17 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //**********************************************************
             //Capturar Fecha Fin
             int[] tramaFechaFin = new int[1];
-            tramaFechaFin[0] = bufferRecepcion[120];
+            tramaFechaFin[0] = bufferRecepcion[142];
             String diaFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[121];
+            tramaFechaFin[0] = bufferRecepcion[143];
             String mesFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[122];
+            tramaFechaFin[0] = bufferRecepcion[144];
             String anioFin = "20" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[125];
+            tramaFechaFin[0] = bufferRecepcion[147];
             String horaFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[124];
+            tramaFechaFin[0] = bufferRecepcion[146];
             String minutoFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[123];
+            tramaFechaFin[0] = bufferRecepcion[145];
             String segundoFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
 
             //String fechaFin = diaFin + "-" + mesFin + "-" + anioFin + "";
@@ -2005,7 +2055,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Tipo de Cierre
             int[] tramaTipoCierre = new int[1];
             contador = 0;
-            for (int i = 126; i <= 126; i++) {
+            for (int i = 148; i <= 148; i++) {
                 tramaTipoCierre[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2029,6 +2079,9 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             entity.setTipoTransaccion(0);
             entity.setLatitud("");
             entity.setLongitud("");
+            entity.setMotivo(0);
+            entity.setRazon(0);
+            entity.setComentario("");
             entity.setTipoErrorPreseteo(0);
             entity.setVolumenAutorizado(0);
             entity.setVolumenAceptado(0);
@@ -2300,10 +2353,51 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             Log.v("Longitud", entity.getLongitud());
 
             //**********************************************************
+            //Capturar Razon
+            int[] tramaRazon = new int[1];
+            contador = 0;
+            for (int i = 90; i <= 90; i++) {
+                tramaRazon[contador] = bufferRecepcion[i];
+                contador++;
+            }
+
+            int razon = Integer.parseInt(byteArrayToHexIntGeneral(tramaRazon, 1));
+            entity.setRazon(razon);
+
+            Log.v("Razon", "" + entity.getRazon());
+
+            //**********************************************************
+            //Capturar Motivo
+            int[] tramaMotivo = new int[1];
+            contador = 0;
+            for (int i = 90; i <= 90; i++) {
+                tramaMotivo[contador] = bufferRecepcion[i];
+                contador++;
+            }
+
+            int motivo = Integer.parseInt(byteArrayToHexIntGeneral(tramaMotivo, 1));
+            entity.setMotivo(motivo);
+
+            Log.v("Motivo", "" + entity.getMotivo());
+
+            //**********************************************************
+            //Capturar Comentario
+
+            int[] tramaComentario = new int[20];
+            int c = 0;
+            for(int i = 92; i<= 111;  i++){
+                tramaComentario[c] = bufferRecepcion[i];
+                c++;
+            }
+            entity.setComentario(hexToAscii(byteArrayToHexString(tramaComentario,tramaComentario.length)).trim());
+
+            Log.v("Comentario", "" + entity.getComentario());
+
+            //**********************************************************
             //Capturar Tipo Error Pre-Seteo
             int[] tramaTipoErrorPreseteo = new int[1];
             contador = 0;
-            for (int i = 90; i <= 90; i++) {
+            for (int i = 112; i <= 112; i++) {
                 tramaTipoErrorPreseteo[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2317,7 +2411,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Volumen Autorizado
             int[] tramaVolumenAutorizado = new int[2];
             contador = 0;
-            for (int i = 91; i <= 92; i++) {
+            for (int i = 113; i <= 114; i++) {
                 tramaVolumenAutorizado[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2329,7 +2423,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Volumen Aceptado
             int[] tramaVolumenAceptado = new int[2];
             contador = 0;
-            for (int i = 93; i <= 94; i++) {
+            for (int i = 115; i <= 116; i++) {
                 tramaVolumenAceptado[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2341,7 +2435,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Código Cliente
             int[] tramaCodigoCliente = new int[2];
             contador = 0;
-            for (int i = 100; i <= 101; i++) {
+            for (int i = 122; i <= 123; i++) {
                 tramaCodigoCliente[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2353,7 +2447,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar codigo area
             int[] tramaCodigoArea = new int[1];
             contador = 0;
-            for (int i = 102; i <= 102; i++) {
+            for (int i = 124; i <= 124; i++) {
                 tramaCodigoArea[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2367,7 +2461,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar tipo TAG
             int[] tramaTipoTAG = new int[1];
             contador = 0;
-            for (int i = 103; i <= 103; i++) {
+            for (int i = 125; i <= 125; i++) {
                 tramaTipoTAG[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2381,7 +2475,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Volumen Abastecido
             int[] tramaVolumen = new int[9];
             contador = 0;
-            for (int i = 104; i <= 112; i++) {
+            for (int i = 126; i <= 134; i++) {
                 tramaVolumen[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2399,7 +2493,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Temperatura
             int[] tramaTemperatura = new int[5];
             contador = 0;
-            for (int i = 113; i <= 117; i++) {
+            for (int i = 135; i <= 139; i++) {
                 tramaTemperatura[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2416,17 +2510,17 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //**********************************************************
             //Capturar Fecha Fin
             int[] tramaFechaFin = new int[1];
-            tramaFechaFin[0] = bufferRecepcion[118];
+            tramaFechaFin[0] = bufferRecepcion[140];
             String diaFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[119];
+            tramaFechaFin[0] = bufferRecepcion[141];
             String mesFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[120];
+            tramaFechaFin[0] = bufferRecepcion[142];
             String anioFin = "20" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[123];
+            tramaFechaFin[0] = bufferRecepcion[145];
             String horaFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[122];
+            tramaFechaFin[0] = bufferRecepcion[144];
             String minutoFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
-            tramaFechaFin[0] = bufferRecepcion[121];
+            tramaFechaFin[0] = bufferRecepcion[143];
             String segundoFin = "" + byteArrayToHexString(tramaFechaFin, tramaFechaFin.length);
 
             //String fechaFin = diaFin + "-" + mesFin + "-" + anioFin + "";
@@ -2443,7 +2537,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Tipo de Cierre
             int[] tramaTipoCierre = new int[1];
             contador = 0;
-            for (int i = 124; i <= 124; i++) {
+            for (int i = 146; i <= 146; i++) {
                 tramaTipoCierre[contador] = bufferRecepcion[i];
                 contador++;
             }
@@ -2475,6 +2569,9 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             entity.setTipoTag(0);
             entity.setVolumen("0.00");
             entity.setTemperatura("");
+            entity.setRazon(0);
+            entity.setMotivo(0);
+            entity.setComentario("");
             entity.setFechaFin("00-00-0000");
             entity.setHoraFin("00:00:00");
             entity.setTipoCierre(0);
@@ -2540,6 +2637,13 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         }
         dataFormEntity.setPlaca(hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length)).trim());
 
+        int[] tramaIdCompartimiento = new int[1];
+        for(int i = 20; i<= 20;  i++){
+            tramaIdCompartimiento[0] = bufferRecepcion[i];
+        }
+        //String estadoActual = byteArrayToHexString(tramaEstadoActual,tramaEstadoActual.length);
+        dataFormEntity.setIdCompartimiento(Integer.parseInt(byteArrayToHexIntGeneral(tramaIdCompartimiento,1)));
+
         switch (bufferRecepcion[19]){
             case EmbeddedPtcl.tag_vehiculo:
                 dataFormEntity.setSolicitaConductor(false);
@@ -2554,25 +2658,25 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                 break;
         }
 
-        dataFormEntity.setSolicitaOperador(bufferRecepcion[20]!=0);
-        dataFormEntity.setSolicitaHorometro(bufferRecepcion[21]!=0);
+        dataFormEntity.setSolicitaOperador(bufferRecepcion[21]!=0);
+        dataFormEntity.setSolicitaHorometro(bufferRecepcion[22]!=0);
         dataFormEntity.setSolicitaKilometraje(bufferRecepcion[22]!=0);
-        dataFormEntity.setValidaHorometro(bufferRecepcion[23]!=0);
-        dataFormEntity.setValidaKilometro(bufferRecepcion[24]!=0);
-        dataFormEntity.setSolicitaPreseteo(bufferRecepcion[25]!=0);
+        dataFormEntity.setValidaHorometro(bufferRecepcion[24]!=0);
+        dataFormEntity.setValidaKilometro(bufferRecepcion[25]!=0);
+        dataFormEntity.setSolicitaPreseteo(bufferRecepcion[26]!=0);
 
         //Capturar Kilometraje Actual
         if (dataFormEntity.isSolicitaKilometraje()) {
             int[] tramaKilometrajeParteEntera = new int[3];
             c = 0;
-            for (int i = 28; i >= 26; i--) {
+            for (int i = 29; i >= 27; i--) {
                 tramaKilometrajeParteEntera[c] = bufferRecepcion[i];
                 c++;
             }
             int kilometrajeParteEntera = byteArrayToHexInt(tramaKilometrajeParteEntera, tramaKilometrajeParteEntera.length);
 
             int[] tramaKilometrajeParteDecimal = new int[1];
-            tramaKilometrajeParteDecimal[0] = bufferRecepcion[29];
+            tramaKilometrajeParteDecimal[0] = bufferRecepcion[30];
             int kilometrajeParteDecimal = byteArrayToHexInt(tramaKilometrajeParteDecimal, tramaKilometrajeParteDecimal.length);
             dataFormEntity.setKilometrajeActual(Double.valueOf(kilometrajeParteEntera + "." + kilometrajeParteDecimal));
             Log.v("Formulario", ""+dataFormEntity.getKilometrajeActual() );
@@ -2581,16 +2685,16 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         if (dataFormEntity.isValidaKilometraje()) {
             //Capturar Kilometraje Minimo
             int[] tramaKilometrajeMinimo = new int[2];
-            tramaKilometrajeMinimo[0] = bufferRecepcion[31];
-            tramaKilometrajeMinimo[1] = bufferRecepcion[30];
+            tramaKilometrajeMinimo[0] = bufferRecepcion[32];
+            tramaKilometrajeMinimo[1] = bufferRecepcion[31];
             int kilometrajeMinimo = byteArrayToHexInt(tramaKilometrajeMinimo, 2);
             dataFormEntity.setKilometrajeMinimo(dataFormEntity.kilometrajeActual + kilometrajeMinimo);
             Log.v("Formulario", ""+dataFormEntity.getKilometrajeMinimo() );
 
             //Capturar Kilometraje Maximo
             int[] tramaKilometrajeMaximo = new int[2];
-            tramaKilometrajeMaximo[0] = bufferRecepcion[33];
-            tramaKilometrajeMaximo[1] = bufferRecepcion[32];
+            tramaKilometrajeMaximo[0] = bufferRecepcion[34];
+            tramaKilometrajeMaximo[1] = bufferRecepcion[33];
             int kilometrajeMaximo = byteArrayToHexInt(tramaKilometrajeMaximo, 2);
             dataFormEntity.setKilometrajeMaximo(dataFormEntity.kilometrajeActual + kilometrajeMaximo);
             Log.v("Formulario", ""+dataFormEntity.getKilometrajeMaximo() );
@@ -2601,14 +2705,14 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
             //Capturar Horometro Actual
             int[] tramaHorometroParteEntera = new int[3];
             c = 0;
-            for (int i = 36; i >= 34; i--) {
+            for (int i = 37; i >= 35; i--) {
                 tramaHorometroParteEntera[c] = bufferRecepcion[i];
                 c++;
             }
             int horometroParteEntera = byteArrayToHexInt(tramaHorometroParteEntera, tramaHorometroParteEntera.length);
 
             int[] tramaHorometroParteDecimal = new int[1];
-            tramaHorometroParteDecimal[0] = bufferRecepcion[37];
+            tramaHorometroParteDecimal[0] = bufferRecepcion[38];
             int horometroParteDecimal = byteArrayToHexInt(tramaHorometroParteDecimal, tramaHorometroParteDecimal.length);
 
             dataFormEntity.setHorometroActual(Double.valueOf(horometroParteEntera + "." + horometroParteDecimal));
@@ -2617,29 +2721,29 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         if(dataFormEntity.isValidaHorometro()) {
             //Capturar Horometro Minimo
             int[] tramaHorometroMinimo = new int[2];
-            tramaHorometroMinimo[0] = bufferRecepcion[39];
-            tramaHorometroMinimo[1] = bufferRecepcion[38];
+            tramaHorometroMinimo[0] = bufferRecepcion[40];
+            tramaHorometroMinimo[1] = bufferRecepcion[39];
             int horometroMinimo = byteArrayToHexInt(tramaHorometroMinimo, 2);
             dataFormEntity.setHorometroMinimo(dataFormEntity.horometroActual + horometroMinimo);
 
             //Capturar Horometro Maximo
             int[] tramaHorometroMaximo = new int[2];
-            tramaHorometroMaximo[0] = bufferRecepcion[41];
-            tramaHorometroMaximo[1] = bufferRecepcion[40];
+            tramaHorometroMaximo[0] = bufferRecepcion[42];
+            tramaHorometroMaximo[1] = bufferRecepcion[41];
             int horometroMaximo = byteArrayToHexInt(tramaHorometroMaximo, 2);
             dataFormEntity.setHorometroMaximo(dataFormEntity.horometroActual + horometroMaximo);
         }
 
         if(dataFormEntity.isSolicitaPreseteo()){
             int[] tramaPreseteoMinimo = new int[2];
-            tramaPreseteoMinimo[0] = bufferRecepcion[43];
-            tramaPreseteoMinimo[1] = bufferRecepcion[42];
+            tramaPreseteoMinimo[0] = bufferRecepcion[44];
+            tramaPreseteoMinimo[1] = bufferRecepcion[43];
             int preseteoMinimo = byteArrayToHexInt(tramaPreseteoMinimo, 2);
             dataFormEntity.setPreseteoMinimo(preseteoMinimo);
 
             int[] tramaPreseteoMaximo = new int[2];
-            tramaPreseteoMaximo[0] = bufferRecepcion[45];
-            tramaPreseteoMaximo[1] = bufferRecepcion[44];
+            tramaPreseteoMaximo[0] = bufferRecepcion[46];
+            tramaPreseteoMaximo[1] = bufferRecepcion[45];
             int preseteoMaximo = byteArrayToHexInt(tramaPreseteoMaximo, 2);
             dataFormEntity.setPreseteoMaximo(preseteoMaximo);
         }
@@ -2823,61 +2927,41 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         }
         placa = hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length));
 
-
-        int[] tramaAutorizadoPlaca = new int[1];
+        int[] tramaIdCompartimiento = new int[1];
         for(int i = 28; i<= 28;  i++){
-            tramaAutorizadoPlaca[0] = bufferRecepcion[i];
+            tramaIdCompartimiento[0] = bufferRecepcion[i];
         }
         //String estadoActual = byteArrayToHexString(tramaEstadoActual,tramaEstadoActual.length);
-        int autorizado = Integer.parseInt(byteArrayToHexIntGeneral(tramaAutorizadoPlaca,1));
-        Log.v("Autorizado",""+ autorizado);
+        int idCompartimiento = Integer.parseInt(byteArrayToHexIntGeneral(tramaIdCompartimiento,1));
+        Log.v("IdCompartimiento",""+ idCompartimiento);
 
-        int[] tramaPrefixValido = new int[1];
-        for(int i = 29; i<= 29;  i++){
-            tramaPrefixValido[0] = bufferRecepcion[i];
-        }
-        int prefix = Integer.parseInt(byteArrayToHexIntGeneral(tramaPrefixValido,1));
-        Log.v("Prefix",""+ prefix);
 
-        int[] tramaProductoCorrecto = new int[1];
-        for(int i = 30; i<= 30;  i++){
-            tramaProductoCorrecto[0] = bufferRecepcion[i];
-        }
-        int producto = Integer.parseInt(byteArrayToHexIntGeneral(tramaProductoCorrecto,1));
+        boolean vehiculoValido =  bufferRecepcion[29]!=0;
+        Log.v("Vehiculo Valido",""+ vehiculoValido);
 
-        Log.v("Producto",""+ producto);
+        boolean prefixValido = bufferRecepcion[30]!=0;
+        Log.v("Prefix Valido",""+ prefixValido);
 
-        int[] tramaBloqueado = new int[1];
-        for(int i = 31; i<= 31;  i++){
-            tramaBloqueado[0] = bufferRecepcion[i];
-        }
-        int bloqueado = Integer.parseInt(byteArrayToHexIntGeneral(tramaBloqueado,1));
+        boolean productoCorrecto = bufferRecepcion[31]!=0;
+        Log.v("Producto Correcto",""+ productoCorrecto);
 
+        boolean bloqueado = bufferRecepcion[32]!=0;
         Log.v("Bloqueado",""+ bloqueado);
 
-        int[] tramaRegistrado = new int[1];
-        for(int i = 32; i<= 32;  i++){
-            tramaRegistrado[0] = bufferRecepcion[i];
-        }
-        int registrado = Integer.parseInt(byteArrayToHexIntGeneral(tramaRegistrado,1));
-
+        boolean registrado = bufferRecepcion[33]!=0;
         Log.v("Registrado",""+ registrado);
 
-        int[] tramaHabilitado = new int[1];
-        for(int i = 33; i<= 33;  i++){
-            tramaHabilitado[0] = bufferRecepcion[i];
-        }
-        int habilitado = Integer.parseInt(byteArrayToHexIntGeneral(tramaHabilitado,1));
-
+        boolean habilitado = bufferRecepcion[34]!=0;
         Log.v("Habilitado",""+ habilitado);
 
-        int[] tramaExpiracionValida = new int[1];
-        for(int i = 34; i<= 34;  i++){
-            tramaExpiracionValida[0] = bufferRecepcion[i];
-        }
-        int expiracionValida = Integer.parseInt(byteArrayToHexIntGeneral(tramaExpiracionValida,1));
+        boolean expiracionValida = bufferRecepcion[35]!=0;
+        Log.v("Expiración Valida",""+ expiracionValida);
 
-        Log.v("Expiracion Valida",""+ expiracionValida);
+        boolean placaId = bufferRecepcion[36]!=0;
+        Log.v("Placa Id",""+ placaId);
+
+        boolean cantidadAbastecimientos = bufferRecepcion[37]!=0;
+        Log.v("Cantidad Abastecimientos dia",""+ cantidadAbastecimientos);
 
 
         txt_placa = layoutsHose.get(indiceLayoutHose).inflater.findViewById(R.id.txt_placa);
@@ -2985,11 +3069,12 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     }
 
     @Override
-    public void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba, String comentario) {
+    public void sendBytesEmbedded(byte[] responseDataDevice, int direccion, int numeroBomba, String comentario, int razon) {
         ResponseDataDevice = responseDataDevice;
         direccionResponse = direccion;
         numeroBombaResponse = numeroBomba;
         comentarioResponse = comentario;
+        razonResponse=razon;
 
         //longitud=EmbeddedPtcl.enviarDataFormularioWifi(bufferTransmision,1,8,2,dataFormEntity);
         //Log.v("", "" + "Transmision   FormData" + byteArrayToHexString(bufferTransmision,0x64));
@@ -3032,8 +3117,9 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     }
 
     @Override
-    public void readNFCPlate(int indiceBomba) {
+    public void readNFCPlate(int indiceBomba, int numeroBomba) {
         indiceBombaRead = indiceBomba;
+        numeroBombaRead = numeroBomba;
         Const.ESTADO_NFC = false;
         Const.CONTADOR_LECTURAS_NFC  = 0;
         mainListener.enableForegroundDispatchSystem();
@@ -3065,23 +3151,55 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         mainListener.disableForegroundDispatchSystem();
         String responseDataTexto = "";
 
+
+        int productoResponse = responseDataDevice[18];
+
+        Hose hose = getHoseByNumber(numeroBombaRead);
+
+        if(productoResponse != hose.getIdProduct())
+            mostrarMensajeUsuario("Producto no coincide con esta manguera.");
+        else{
+            responseDataTexto = Utils.byteArrayToHexString(responseDataDevice,responseDataDevice.length);
+            Log.v("TAG", responseDataTexto);
+
+            int[] tramaPlaca = new int[10];
+            int c = 0;
+            for(int i = 1; i<= 10;  i++){
+                tramaPlaca[c] = responseDataDevice[i];
+                c++;
+            }
+
+            placa = hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length)).trim();
+
+            VehicleEntity vehicleEntity = crudOperations .getVehicleForPlate(placa);
+
+            if(vehicleEntity.getIdSqlLite()!= 0){
+                List<CompartmentEntity> compartmentEntities = new ArrayList<>();
+
+                Log.v("Compartimeinto",""+responseDataDevice[30]);
+
+                compartmentEntities = crudOperations.getCompartmentForPlate(placa,responseDataDevice[30]);
+
+                if(compartmentEntities.size()>0){
+                    if(layoutsHose.get(indiceBombaRead).formDialogTransaction!=null){
+                        layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirDataReadNfc(responseDataDevice, placa, compartmentEntities.get(0).getCompartmentName());
+                    }
+                }else{
+                    mostrarMensajeUsuario("Compartimiento no conforme con el modelo del vehiculo.");
+                }
+            }else{
+                mostrarMensajeUsuario("El vehiculo con placa "+placa+" no se encuentra regustrado.");
+            }
+
+
+
+
+
+        }
+
         //procesarInfoHMI(responseDataDevice);
 
-        responseDataTexto = Utils.byteArrayToHexString(responseDataDevice,responseDataDevice.length);
-        Log.v("TAG", responseDataTexto);
 
-        int[] tramaPlaca = new int[10];
-        int c = 0;
-        for(int i = 1; i<= 10;  i++){
-            tramaPlaca[c] = responseDataDevice[i];
-            c++;
-        }
-
-        placa = hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length)).trim();
-
-        if(layoutsHose.get(indiceBombaRead).formDialogTransaction!=null){
-            layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirPlaca(responseDataDevice, placa);
-        }
 
     }
 
@@ -3106,6 +3224,21 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         placa = hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length)).trim();
 
 
+    }
+
+    private Hose getHoseByNumber(int idBomba){
+
+        Hose hose = new Hose();
+
+        for(int i =0; i<hoseMasters.size();i++){
+            if(hoseMasters.get(i).getHoseNumber() == idBomba){
+                hose = hoseMasters.get(i);
+                break;
+            }
+
+        }
+
+        return hose;
     }
 
     @Override

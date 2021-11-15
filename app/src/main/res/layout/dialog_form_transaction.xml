@@ -67,6 +67,27 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <LinearLayout
+                    android:id="@+id/lyPlacaNFC"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="visible"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <!--
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
+                        app:srcCompat="@drawable/ic_baseline_nfc_24"
+                        tools:ignore="VectorDrawableCompat"/>
+                        -->
+
+
+                </LinearLayout>
+
+
             </LinearLayout>
 
             <!-- SECCIÓN PLACA -->
@@ -98,7 +119,7 @@
                     />
 
                 <LinearLayout
-                    android:layout_width="180dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/bg_para_texto_dialogo"
                     android:gravity="center">
@@ -111,28 +132,10 @@
                         android:textStyle="bold"
                         android:enabled="false"
                         android:textColor="#ffffff"
-                        android:textSize="20sp"/>
+                        android:textSize="18sp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/lyPlacaNFC"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:visibility="visible"
-                    android:gravity="center"
-                    android:orientation="vertical">
 
-                    <!--
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
-                        app:srcCompat="@drawable/ic_baseline_nfc_24"
-                        tools:ignore="VectorDrawableCompat"/>
-                        -->
-
-
-                </LinearLayout>
 
             </LinearLayout>
             <TextView
@@ -146,6 +149,55 @@
                 android:textSize="20sp"
                 android:textColor="@color/md_red_900"
                 android:visibility="gone"/>
+
+            <!-- SECCIÓN COMPARTIMIENTO -->
+            <LinearLayout
+                android:id="@+id/lyCompartimiento"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:visibility="visible"
+                android:gravity="center"
+                >
+                <TextView
+                    android:background="@drawable/bg_para_subtitulo_dialogo"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="COMPARTIMIENTO"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="40dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/bg_correspondencia_dialogo"
+                    />
+
+                <LinearLayout
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_para_texto_dialogo"
+                    android:gravity="center">
+
+                    <EditText
+                        android:background="@android:color/transparent"
+                        android:id="@+id/etCompartimiento"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textStyle="bold"
+                        android:enabled="false"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
 
             <!-- SECCIÓN KILOMETRAJE -->
             <LinearLayout
@@ -306,40 +358,20 @@
                 android:gravity="center"
                 >
 
-                <TextView
-                    android:background="@drawable/bg_para_subtitulo_dialogo"
-                    android:layout_width="180dp"
-                    android:layout_height="match_parent"
-                    android:text="RAZON"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:gravity="center"
-                    />
-
                 <LinearLayout
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@drawable/bg_correspondencia_dialogo"
-                    />
-
-                <LinearLayout
-                    android:layout_width="180dp"
+                    android:layout_width="300dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/bg_para_texto_dialogo"
+                    android:background="@drawable/bg_para_textview"
                     android:gravity="center">
 
-                    <EditText
-                        android:id="@+id/etRazon"
-                        android:layout_width="match_parent"
+                    <Spinner
+                        android:id="@+id/spRazones"
+                        android:layout_width="300dp"
                         android:layout_height="match_parent"
-                        android:textAlignment="center"
-                        android:enabled="true"
-                        android:inputType="number"
-                        android:textColor="#ffffff"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:layout_marginVertical="2dp"
+                        android:layout_marginStart="3dp"
+                        />
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -390,38 +422,6 @@
                         android:textSize="18sp"
                         android:textStyle="bold" />
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- SECCIÓN COMPARTIMIENTO -->
-            <LinearLayout
-                android:id="@+id/lyCompartimiento"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:visibility="visible"
-                android:gravity="center"
-                >
-
-
-                <LinearLayout
-                    android:layout_width="180dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bg_para_texto_dialogo"
-                    android:gravity="center">
-
-                    <EditText
-                        android:background="@android:color/transparent"
-                        android:id="@+id/etIdCon04ctor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:enabled="false"
-                        android:textColor="#ffffff"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
 
             </LinearLayout>
 

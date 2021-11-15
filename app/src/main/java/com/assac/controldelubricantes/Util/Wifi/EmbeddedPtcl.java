@@ -264,8 +264,11 @@ public class EmbeddedPtcl {
         //llenar datos longitud buffer[88] - buffer[99]
 
         //llenar razon buffer[100]
-        //llenar motivo buffer[101]
 
+        buffer[100] = (byte)dataFormEntity.razon;
+
+        //llenar motivo buffer[101]
+        buffer[101] = (byte)dataFormEntity.razon;
 
         //llenar comentario buffer[102] - buffer[121]
         char[] arrayComentario = dataFormEntity.getComentario().toCharArray();
@@ -280,8 +283,8 @@ public class EmbeddedPtcl {
         return longitud;
     }
 
-    public static int enviarDataNFC(byte[] buffer, byte[] responseDataDevice, int direccion, int opcCodePrincipal, int numeroBomba, String comentario){
-        int longitud=64;
+    public static int enviarDataNFC(byte[] buffer, byte[] responseDataDevice, int direccion, int opcCodePrincipal, int numeroBomba, String comentario, int razon){
+        int longitud=86;
 
         buffer[0]=0x02;
         buffer[1]=0x56;
@@ -358,8 +361,10 @@ public class EmbeddedPtcl {
 
 
         //RAZON
+        buffer[62]=(byte)razon;
 
         //MOTIVO
+        buffer[63]=(byte)razon;
 
         //COMENTARIO
         char[] arrayComentario = comentario.toCharArray();

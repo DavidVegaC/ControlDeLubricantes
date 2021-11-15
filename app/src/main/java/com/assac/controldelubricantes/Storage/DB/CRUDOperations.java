@@ -271,6 +271,8 @@ public class CRUDOperations {
         values.put(MyDatabase.KEY_CONDUCTOR_KEY_TB_TRANSACTION, transactionEntity.getIdConductor());
         values.put(MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION, transactionEntity.getVolumen());
         values.put(MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION, transactionEntity.getTemperatura());
+        values.put(MyDatabase.KEY_REASON_TB_TRANSACTION, transactionEntity.getRazon());
+        values.put(MyDatabase.KEY_MOTIVE_TB_TRANSACTION, transactionEntity.getMotivo());
         values.put(MyDatabase.KEY_COMMENT_TB_TRANSACTION, transactionEntity.getComentario());
         values.put(MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION, transactionEntity.getNombreProducto());
         values.put(MyDatabase.KEY_OPERATOR_KEY_TB_TRANSACTION, transactionEntity.getIdOperador());
@@ -338,6 +340,7 @@ public class CRUDOperations {
 
     }
 
+    //this
     public List<TransactionEntity> getTransactionByTransactionAndHose(String nroTransaccion, String estado)
     {
         List<TransactionEntity> lst =new ArrayList<TransactionEntity>();
@@ -360,6 +363,10 @@ public class CRUDOperations {
                 " RA." +MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION +" , " +
+
+                " RA." +MyDatabase.KEY_REASON_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_MOTIVE_TB_TRANSACTION +" , " +
+
                 " RA." +MyDatabase.KEY_COMMENT_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_IMAGE_URI_TB_TRANSACTION +" , " +
 
@@ -398,13 +405,17 @@ public class CRUDOperations {
                 String fuelQuantity = ""+cursor.getString(11);
                 String fuelTemperature = ""+cursor.getString(12);
                 String productName = ""+cursor.getString(13);
-                String comment = ""+cursor.getString(14);
-                String imageUri = ""+cursor.getString(15);
-                String startContometer = ""+cursor.getString(16);
-                String endContometer = ""+cursor.getString(17);
-                String idRegistrationUser = ""+cursor.getString(18);
-                String registrationStatus = ""+cursor.getString(19);
-                String migrationStatus = ""+cursor.getString(20);
+
+                int razon = cursor.getInt(14);
+                int motivo = cursor.getInt(15);
+
+                String comment = ""+cursor.getString(16);
+                String imageUri = ""+cursor.getString(17);
+                String startContometer = ""+cursor.getString(18);
+                String endContometer = ""+cursor.getString(19);
+                String idRegistrationUser = ""+cursor.getString(20);
+                String registrationStatus = ""+cursor.getString(21);
+                String migrationStatus = ""+cursor.getString(22);
 
                 transactionEntity.setIdSqlite(idSqlite);
                 transactionEntity.setIdTransaction(idTransaction);
@@ -420,6 +431,8 @@ public class CRUDOperations {
                 transactionEntity.setVolumen(fuelQuantity);
                 transactionEntity.setTemperatura(fuelTemperature);
                 transactionEntity.setNombreProducto(productName);
+                transactionEntity.setRazon(razon);
+                transactionEntity.setMotivo(motivo);
                 transactionEntity.setComentario(comment);
                 transactionEntity.setImageUri(imageUri);
                 transactionEntity.setContometroInicial(startContometer);
@@ -457,6 +470,8 @@ public class CRUDOperations {
                 " RA." +MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_REASON_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_MOTIVE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_COMMENT_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_IMAGE_URI_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_USER_TB_TRANSACTION +" , " +
@@ -490,11 +505,15 @@ public class CRUDOperations {
                 String fuelQuantity = ""+cursor.getString(11);
                 String fuelTemperature = ""+cursor.getString(12);
                 String productName = ""+cursor.getString(13);
-                String comment = ""+cursor.getString(14);
-                String imageUri = ""+cursor.getString(15);
-                String idRegistrationUser = ""+cursor.getString(16);
-                String registrationStatus = ""+cursor.getString(17);
-                String migrationStatus = ""+cursor.getString(18);
+
+                int razon = cursor.getInt(14);
+                int motivo = cursor.getInt(15);
+
+                String comment = ""+cursor.getString(16);
+                String imageUri = ""+cursor.getString(17);
+                String idRegistrationUser = ""+cursor.getString(18);
+                String registrationStatus = ""+cursor.getString(19);
+                String migrationStatus = ""+cursor.getString(20);
 
                 transactionEntity.setIdSqlite(idSqlite);
                 transactionEntity.setIdTransaction(idTransaction);
@@ -510,6 +529,8 @@ public class CRUDOperations {
                 transactionEntity.setVolumen(fuelQuantity);
                 transactionEntity.setTemperatura(fuelTemperature);
                 transactionEntity.setNombreProducto(productName);
+                transactionEntity.setRazon(razon);
+                transactionEntity.setMotivo(motivo);
                 transactionEntity.setComentario(comment);
                 transactionEntity.setImageUri(imageUri);
                 transactionEntity.setIdUsuarioRegistro(idRegistrationUser);
@@ -560,6 +581,8 @@ public class CRUDOperations {
                 " RA." +MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_REASON_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_MOTIVE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_COMMENT_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_IMAGE_URI_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_USER_TB_TRANSACTION +" , " +
@@ -595,11 +618,15 @@ public class CRUDOperations {
                 String fuelQuantity = ""+cursor.getString(11);
                 String fuelTemperature = ""+cursor.getString(12);
                 String productName = ""+cursor.getString(13);
-                String comment = ""+cursor.getString(14);
-                String imageUri = ""+cursor.getString(15);
-                String idRegistrationUser = ""+cursor.getString(16);
-                String registrationStatus = ""+cursor.getString(17);
-                String migrationStatus = ""+cursor.getString(18);
+
+                int razon = cursor.getInt(14);
+                int motivo = cursor.getInt(15);
+
+                String comment = ""+cursor.getString(16);
+                String imageUri = ""+cursor.getString(17);
+                String idRegistrationUser = ""+cursor.getString(18);
+                String registrationStatus = ""+cursor.getString(19);
+                String migrationStatus = ""+cursor.getString(20);
 
                 transactionEntity.setIdSqlite(idSqlite);
                 transactionEntity.setIdTransaction(idTransaction);
@@ -615,6 +642,8 @@ public class CRUDOperations {
                 transactionEntity.setVolumen(fuelQuantity);
                 transactionEntity.setTemperatura(fuelTemperature);
                 transactionEntity.setNombreProducto(productName);
+                transactionEntity.setRazon(razon);
+                transactionEntity.setMotivo(motivo);
                 transactionEntity.setComentario(comment);
                 transactionEntity.setImageUri(imageUri);
                 transactionEntity.setIdUsuarioRegistro(idRegistrationUser);
@@ -734,6 +763,8 @@ public class CRUDOperations {
                 " RA." +MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_REASON_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_MOTIVE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_COMMENT_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_USER_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_STATUS_TB_TRANSACTION +" , " +
@@ -770,10 +801,14 @@ public class CRUDOperations {
                 String fuelQuantity = ""+cursor.getString(11);
                 String fuelTemperature = ""+cursor.getString(12);
                 String productName = ""+cursor.getString(13);
-                String comment = ""+cursor.getString(14);
-                String idRegistrationUser = ""+cursor.getString(15);
-                String registrationStatus = ""+cursor.getString(16);
-                String migrationStatus = ""+cursor.getString(17);
+
+                int razon = cursor.getInt(14);
+                int motivo = cursor.getInt(15);
+
+                String comment = ""+cursor.getString(16);
+                String idRegistrationUser = ""+cursor.getString(17);
+                String registrationStatus = ""+cursor.getString(18);
+                String migrationStatus = ""+cursor.getString(19);
 
                 transactionEntity.setIdSqlite(idSqlite);
                 transactionEntity.setIdTransaction(idTransaction);
@@ -787,6 +822,8 @@ public class CRUDOperations {
                 transactionEntity.setPlaca(vehicleCodePlate);
                 transactionEntity.setVolumen(fuelQuantity);
                 transactionEntity.setTemperatura(fuelTemperature);
+                transactionEntity.setRazon(razon);
+                transactionEntity.setMotivo(motivo);
                 transactionEntity.setComentario(comment);
                 transactionEntity.setNombreProducto(productName);
                 transactionEntity.setIdUsuarioRegistro(idRegistrationUser);
@@ -821,6 +858,8 @@ public class CRUDOperations {
                 " RA." +MyDatabase.KEY_FUEL_QUANTITY_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_FUEL_TEMPERATURE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_PRODUCT_NAME_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_REASON_TB_TRANSACTION +" , " +
+                " RA." +MyDatabase.KEY_MOTIVE_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_COMMENT_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_USER_TB_TRANSACTION +" , " +
                 " RA." +MyDatabase.KEY_REGISTRATION_STATUS_TB_TRANSACTION +" , " +
@@ -852,10 +891,14 @@ public class CRUDOperations {
                 String fuelQuantity = ""+cursor.getString(10);
                 String fuelTemperature = ""+cursor.getString(11);
                 String productName = ""+cursor.getString(12);
-                String comment = ""+cursor.getString(13);
-                String idRegistrationUser = ""+cursor.getString(14);
-                String registrationStatus = ""+cursor.getString(15);
-                String migrationStatus = ""+cursor.getString(16);
+
+                int razon = cursor.getInt(14);
+                int motivo = cursor.getInt(15);
+
+                String comment = ""+cursor.getString(16);
+                String idRegistrationUser = ""+cursor.getString(17);
+                String registrationStatus = ""+cursor.getString(18);
+                String migrationStatus = ""+cursor.getString(19);
 
                 transactionEntity.setIdSqlite(idSqlite);
                 transactionEntity.setIdTransaction(idTransaction);
@@ -869,6 +912,8 @@ public class CRUDOperations {
                 transactionEntity.setPlaca(vehicleCodePlate);
                 transactionEntity.setVolumen(fuelQuantity);
                 transactionEntity.setTemperatura(fuelTemperature);
+                transactionEntity.setRazon(razon);
+                transactionEntity.setMotivo(motivo);
                 transactionEntity.setComentario(comment);
                 transactionEntity.setNombreProducto(productName);
                 transactionEntity.setIdUsuarioRegistro(idRegistrationUser);
@@ -1431,6 +1476,37 @@ public class CRUDOperations {
         return totalCount;
     }
 
+    public List<CompartmentEntity> getCompartmentForPlate(String plate, int idCompartment)
+    {
+        List<CompartmentEntity> lst =new ArrayList<CompartmentEntity>();
+
+        String sql = "";
+
+        sql = " SELECT "+
+                " C."+MyDatabase.KEY_ID_TB_COMPARTMENT+" , "+
+                " C."+MyDatabase.KEY_NAME_TB_COMPARTMENT+" "+
+                " FROM "+ MyDatabase.TB_MODEL_COMPARTMENT +" MC "+
+                " LEFT JOIN "+ MyDatabase.TB_COMPARTMENT+" C ON C." +MyDatabase.KEY_ID_TB_COMPARTMENT+" = MC."+MyDatabase.KEY_ID_COMPARTMENT_TB_MODEL_COMPARTMENT + " "+
+                " LEFT JOIN "+ MyDatabase.TB_VEHICLE+" V ON V." +MyDatabase.KEY_MODEL_TB_VEHICLE+" = MC."+MyDatabase.KEY_MODEL_TB_MODEL_COMPARTMENT + " "+
+                " WHERE C."+MyDatabase.KEY_ID_TB_COMPARTMENT+" = "+idCompartment + " AND V."+MyDatabase.KEY_PLATE_TB_VEHICLE+ " = '"+plate+"' ";
+
+        Log.v("SQL",sql);
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                CompartmentEntity compartmentEntity =new CompartmentEntity();
+                compartmentEntity.setIdCompartment(cursor.getInt(0));
+                compartmentEntity.setCompartmentName(cursor.getString(1));
+                lst.add(compartmentEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
 
     //TB_REASON
     public int addReason(ReasonEntity reasonEntity)
@@ -1544,6 +1620,41 @@ public class CRUDOperations {
 
         return totalCount;
     }
+
+    public List<ReasonEntity> getReasonsForNumberProduct(int numberProduct)
+    {
+        List<ReasonEntity> lst =new ArrayList<ReasonEntity>();
+
+        String sql = "";
+
+        sql = " SELECT "+
+                " R."+MyDatabase.KEY_NUMBER_TB_REASON+" , "+
+                " R."+MyDatabase.KEY_NAME_TB_REASON+" , "+
+                " P."+MyDatabase.KEY_ID_TB_PRODUCT+" " +
+                " FROM "+ MyDatabase.TB_REASON +" R "+
+                " INNER JOIN "+ MyDatabase.TB_PRODUCT+" P " +
+                " ON P."+MyDatabase.KEY_ID_TB_PRODUCT + " = R."+MyDatabase.KEY_PRODUCT_TB_REASON+
+                " WHERE P."+MyDatabase.KEY_NUMBER_TB_PRODUCT+" = "+numberProduct;
+
+        Log.v("SQL",sql);
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                ReasonEntity reasonEntity =new ReasonEntity();
+                reasonEntity.setReasonNumber(cursor.getInt(0));
+                reasonEntity.setReasonName(cursor.getString(1));
+                reasonEntity.setIdProduct(cursor.getInt(2));
+                lst.add(reasonEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
+
 
     //TB_VEHICLE
     public int addVehicle(VehicleEntity vehicleEntity)
@@ -1661,6 +1772,34 @@ public class CRUDOperations {
         cursor.close();
 
         return totalCount;
+    }
+
+    public VehicleEntity getVehicleForPlate(String plate)
+    {
+        VehicleEntity vehicleEntity= new VehicleEntity();
+        SQLiteDatabase db = helper.getReadableDatabase(); //modo lectura
+        String sql= "";
+        sql = "SELECT  * FROM " + MyDatabase.TB_VEHICLE +" WHERE "+MyDatabase.KEY_PLATE_TB_VEHICLE+ " = '"+plate+"'";
+
+        Cursor cursor = db.rawQuery(sql, null);
+
+        if(cursor!=null && cursor.getCount() > 0)
+        {
+            cursor.moveToFirst();
+            int idSqlLite = Integer.parseInt(cursor.getString(0));
+            int IdVehicle = Integer.parseInt(cursor.getString(1));
+            int IdCompany = Integer.parseInt(cursor.getString(2));
+            int IdModel = Integer.parseInt(cursor.getString(3));
+            String Plate = cursor.getString(4);
+            String Description = cursor.getString(5);
+            String RegistrationStatus = cursor.getString(6);
+
+            vehicleEntity= new VehicleEntity(idSqlLite,
+                    IdVehicle, IdCompany, IdModel, Plate,Description, RegistrationStatus);
+        }
+
+        return vehicleEntity;
+
     }
 
     //TB_MODEL_COMPARTMENT

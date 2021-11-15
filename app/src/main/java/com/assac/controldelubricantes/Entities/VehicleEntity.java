@@ -32,6 +32,7 @@ public class VehicleEntity {
     public String MensajeConsulta;
 
     public VehicleEntity() {
+        idSqlLite=0;
     }
 
     public VehicleEntity(int idSqlLite, int idVehicle, int idCompany, int idModel, String plate, String vehicleDescription, String registrationStatus) {

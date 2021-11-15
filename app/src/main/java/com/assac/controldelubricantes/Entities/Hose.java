@@ -28,6 +28,10 @@ public class Hose implements Serializable {
     public Double FuelQuantity;
 
     @Expose
+    @SerializedName("IdProduct")
+    public int IdProduct;
+
+    @Expose
     @SerializedName("NameProduct")
     public String NameProduct;
 
@@ -104,6 +108,14 @@ public class Hose implements Serializable {
 
     public void setTotalizator(String totalizator) {
         Totalizator = totalizator;
+    }
+
+    public int getIdProduct() {
+        return IdProduct;
+    }
+
+    public void setIdProduct(int idProduct) {
+        IdProduct = idProduct;
     }
 }
 

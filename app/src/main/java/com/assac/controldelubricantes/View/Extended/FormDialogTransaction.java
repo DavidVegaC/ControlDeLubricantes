@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -33,10 +34,12 @@ import androidx.fragment.app.FragmentManager;
 import com.assac.controldelubricantes.Entities.DataFormEntity;
 import com.assac.controldelubricantes.Entities.Driver;
 import com.assac.controldelubricantes.Entities.Plate;
+import com.assac.controldelubricantes.Entities.ReasonEntity;
 import com.assac.controldelubricantes.Entities.TransactionEntity;
 import com.assac.controldelubricantes.Listeners.EmbeddedWifiListener;
 import com.assac.controldelubricantes.R;
 import com.assac.controldelubricantes.Storage.DB.CRUDOperations;
+import com.assac.controldelubricantes.Storage.DB.MyDatabase;
 import com.assac.controldelubricantes.View.Activity.MainActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -57,11 +60,11 @@ public class FormDialogTransaction extends AlertDialog {
     private TextView tvNombreManguera;
 
     //Región Cuerpo
-    private LinearLayout lyPlaca, lyKilometraje, lyHorometro, lyPreSeteo, lyConductor, lyComentario;
+    private LinearLayout lyPlaca, lyKilometraje, lyHorometro, lyPreSeteo, lyConductor, lyRazon, lyComentario, lyCompartimiento;
     private LinearLayout lyPlacaNFC;
     private LinearLayout lySiguiente;
     private TextView tvTitulo;
-    private EditText etPlaca, etKilometraje, etHorometro, etPreSeteo, etComentario, etIdConductor, etValidacion;
+    private EditText etPlaca, etKilometraje, etHorometro, etPreSeteo, etComentario, etIdConductor, etCompartimiento, etValidacion;
     private LinearLayout lyConductorQR;
 
     private TextView messageErrorPlate, messageErrorIdDriver;
@@ -76,9 +79,16 @@ public class FormDialogTransaction extends AlertDialog {
     public boolean validarVehiculo;
     public boolean validarConductor;
 
+    public Spinner spRazones;
 
     //Animación de pestañeo
     private AnimationDrawable rocketAnimationNFC, rocketAnimationQR;
+
+    List<ReasonEntity> reasonEntities = new ArrayList<>();
+
+    private CRUDOperations crudOperations;
+
+    private int IdProducto=20;
 
     protected FormDialogTransaction(@NonNull Context context) {
         super(context);
@@ -130,6 +140,8 @@ public class FormDialogTransaction extends AlertDialog {
         lyKilometraje = (LinearLayout) v.findViewById(R.id.lyKilometraje);
         lyPreSeteo = (LinearLayout) v.findViewById(R.id.lyPreSeteo);
         lyConductor = (LinearLayout) v.findViewById(R.id.lyConductor);
+        lyCompartimiento = (LinearLayout) v.findViewById(R.id.lyCompartimiento);
+        lyRazon = (LinearLayout) v.findViewById(R.id.lyRazon);
         lyComentario = (LinearLayout) v.findViewById(R.id.lyComentario);
         lyConductorQR = (LinearLayout) v.findViewById(R.id.lyConductorQR);
         lySiguiente = (LinearLayout) v.findViewById(R.id.lySiguiente);
@@ -140,6 +152,7 @@ public class FormDialogTransaction extends AlertDialog {
         etPreSeteo = (EditText) v.findViewById(R.id.etPreSeteo);
         etIdConductor = (EditText) v.findViewById(R.id.etIdConductor);
         etComentario = (EditText) v.findViewById(R.id.etComentario);
+        etCompartimiento = (EditText) v.findViewById(R.id.etCompartimiento);
         etValidacion = (EditText) v.findViewById(R.id.etValidacion);
 
         messageErrorPlate = (TextView) v.findViewById(R.id.messageErrorPlate);
@@ -147,8 +160,12 @@ public class FormDialogTransaction extends AlertDialog {
 
         btnRegistrar = (Button) v.findViewById(R.id.btnRegistrar);
 
+        spRazones = (Spinner) v.findViewById(R.id.spRazones);
+
         lyConductorQR.setBackgroundResource(R.drawable.bg_blink_qr);
         rocketAnimationQR = (AnimationDrawable) lyConductorQR.getBackground();
+
+        crudOperations = new CRUDOperations(new MyDatabase(getContext()));
 
         switch (dataFormEntity.getTag()) {
             case "A":
@@ -156,6 +173,7 @@ public class FormDialogTransaction extends AlertDialog {
                     validarConductor=false;
                     validarVehiculo=true;
                     lyPlacaNFC.setVisibility(View.GONE);
+                    lyCompartimiento.setVisibility(View.GONE);
                     break;
             default:
                     validarConductor=true;
@@ -164,6 +182,7 @@ public class FormDialogTransaction extends AlertDialog {
                     rocketAnimationNFC = (AnimationDrawable) lyPlacaNFC.getBackground();
                     rocketAnimationNFC.start();
                     lyPlacaNFC.setVisibility(View.VISIBLE);
+                    lyCompartimiento.setVisibility(View.VISIBLE);
                     break;
         }
 
@@ -179,9 +198,11 @@ public class FormDialogTransaction extends AlertDialog {
         lyPlacaNFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                embeddedWifiListener.readNFCPlate(dataFormEntity.indiceBomba);
+                embeddedWifiListener.readNFCPlate(dataFormEntity.indiceBomba, dataFormEntity.numeroBomba);
             }
         });
+
+
 
         lySiguiente.setOnClickListener(
                 new View.OnClickListener() {
@@ -192,88 +213,193 @@ public class FormDialogTransaction extends AlertDialog {
                                 if (dataFormEntity.isSolicitaHorometro()) {
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
+                                    lyRazon.setVisibility(View.GONE);
                                     lyHorometro.setVisibility(View.VISIBLE);
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     etValidacion.setText(strMessageHoro);
                                 }else if (dataFormEntity.isSolicitaPreseteo()) {
                                     tvTitulo.setText("PRESETEO");
                                     lyKilometraje.setVisibility(View.GONE);
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
+                                    lyRazon.setVisibility(View.GONE);
                                     lyPreSeteo.setVisibility(View.VISIBLE);
                                     etValidacion.setText(strMessagePreSe);
                                 }else if (dataFormEntity.isSolicitaConductor()) {
                                     tvTitulo.setText("CONDUCTOR");
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyPlacaNFC.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyComentario.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.VISIBLE);
+                                    lyRazon.setVisibility(View.GONE);
                                     etValidacion.setText(strMessageScaneo);
                                     rocketAnimationQR.start();
                                 }else{
-                                    tvTitulo.setText("COMENTARIO");
+                                    lyPlacaNFC.setVisibility(View.GONE);
+                                    tvTitulo.setText("RAZONES");
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
-                                    lyComentario.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Comentario máximo: 20 caracteres.");
+                                    lyComentario.setVisibility(View.GONE);
+
+
+                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+                                    if(reasonEntities.size()>0){
+                                        ArrayList<String> strings = new ArrayList<>();
+                                        for(int i=0; i<reasonEntities.size(); i++){
+                                            strings.add(reasonEntities.get(i).getReasonName());
+                                        }
+                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
+                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+                                        spRazones.setAdapter(stringArrayAdapter);
+                                    }else
+                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+                                    lyRazon.setVisibility(View.VISIBLE);
+                                    etValidacion.setText("Seleccione una razón.");
+
                                 }
                             }else if (lyHorometro.getVisibility()==View.VISIBLE){
                                 if (dataFormEntity.isSolicitaPreseteo()) {
                                     tvTitulo.setText("PRESETEO");
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyHorometro.setVisibility(View.GONE);
                                     lyPreSeteo.setVisibility(View.VISIBLE);
                                     etValidacion.setText(strMessagePreSe);
                                 }else if (dataFormEntity.isSolicitaConductor()) {
                                     tvTitulo.setText("CONDUCTOR");
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyHorometro.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.VISIBLE);
                                     etValidacion.setText(strMessageScaneo);
                                     rocketAnimationQR.start();
                                 }else{
-                                    tvTitulo.setText("COMENTARIO");
+                                    tvTitulo.setText("RAZONES");
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
-                                    lyComentario.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Comentario máximo: 20 caracteres.");
+                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+                                    if(reasonEntities.size()>0){
+                                        ArrayList<String> strings = new ArrayList<>();
+                                        for(int i=0; i<reasonEntities.size(); i++){
+                                            strings.add(reasonEntities.get(i).getReasonName());
+                                        }
+                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
+                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+                                        spRazones.setAdapter(stringArrayAdapter);
+                                    }else
+                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+                                    lyRazon.setVisibility(View.VISIBLE);
+                                    etValidacion.setText("Seleccione una razón.");
                                 }
                             }else if (lyPreSeteo.getVisibility()==View.VISIBLE){
                                 if (dataFormEntity.isSolicitaConductor()) {
                                     tvTitulo.setText("CONDUCTOR");
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyPlacaNFC.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyPreSeteo.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.VISIBLE);
                                     etValidacion.setText(strMessageScaneo);
                                     rocketAnimationQR.start();
                                 }else{
-                                    tvTitulo.setText("COMENTARIO");
+                                    tvTitulo.setText("RAZONES");
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
-                                    lyComentario.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("");
+                                    lyComentario.setVisibility(View.GONE);
+                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+                                    if(reasonEntities.size()>0){
+                                        ArrayList<String> strings = new ArrayList<>();
+                                        for(int i=0; i<reasonEntities.size(); i++){
+                                            strings.add(reasonEntities.get(i).getReasonName());
+                                        }
+                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
+                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+                                        spRazones.setAdapter(stringArrayAdapter);
+                                    }else
+                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+                                    lyRazon.setVisibility(View.VISIBLE);
+                                    etValidacion.setText("Seleccione una razón.");
                                 }
                             }else if (lyConductor.getVisibility()==View.VISIBLE){
                                     validarConductor=true;
-                                    tvTitulo.setText("COMENTARIO");
+                                    tvTitulo.setText("RAZONES");
+                                    lyPlacaNFC.setVisibility(View.GONE);
                                     lyPlaca.setVisibility(View.GONE);
+                                    lyCompartimiento.setVisibility(View.GONE);
                                     lyKilometraje.setVisibility(View.GONE);
                                     lyConductor.setVisibility(View.GONE);
-                                    lyComentario.setVisibility(View.VISIBLE);
-                                    etValidacion.setText("Comentario máximo: 20 caracteres.");
+                                    lyComentario.setVisibility(View.GONE);
+                                    reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+                                    if(reasonEntities.size()>0){
+                                        ArrayList<String> strings = new ArrayList<>();
+                                        for(int i=0; i<reasonEntities.size(); i++){
+                                            strings.add(reasonEntities.get(i).getReasonName());
+                                        }
+                                        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
+                                        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+                                        spRazones.setAdapter(stringArrayAdapter);
+                                    }else
+                                        Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+                                    lyRazon.setVisibility(View.VISIBLE);
+                                    etValidacion.setText("Seleccione una razón.");
                             } else if (lyPlaca.getVisibility()==View.VISIBLE){
-                                tvTitulo.setText("COMENTARIO");
+                                tvTitulo.setText("RAZONES");
                                 lyPlaca.setVisibility(View.GONE);
+                                lyPlacaNFC.setVisibility(View.GONE);
+                                lyCompartimiento.setVisibility(View.GONE);
                                 lyKilometraje.setVisibility(View.GONE);
                                 lyConductor.setVisibility(View.GONE);
+                                lyComentario.setVisibility(View.GONE);
+
+                                reasonEntities = crudOperations.getReasonsForNumberProduct(IdProducto);
+
+                                if(reasonEntities.size()>0){
+                                    ArrayList<String> strings = new ArrayList<>();
+                                    for(int i=0; i<reasonEntities.size(); i++){
+                                        strings.add(reasonEntities.get(i).getReasonName());
+                                    }
+                                    ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_2,strings);
+                                    stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+                                    spRazones.setAdapter(stringArrayAdapter);
+                                }else
+                                    Toast.makeText(context, "No existen razones con el producto "+IdProducto, Toast.LENGTH_SHORT).show();
+
+                                lyRazon.setVisibility(View.VISIBLE);
+                                etValidacion.setText("Seleccione una razón.");
+                            } else if (lyRazon.getVisibility()==View.VISIBLE){
+                                tvTitulo.setText("COMENTARIO");
+                                lyPlaca.setVisibility(View.GONE);
+                                lyPlacaNFC.setVisibility(View.GONE);
+                                lyCompartimiento.setVisibility(View.GONE);
+                                lyKilometraje.setVisibility(View.GONE);
+                                lyConductor.setVisibility(View.GONE);
+                                lyRazon.setVisibility(View.GONE);
                                 lyComentario.setVisibility(View.VISIBLE);
                                 etValidacion.setText("Comentario máximo: 20 caracteres.");
-                            } else if (lyComentario.getVisibility()==View.VISIBLE){
+                            }else if (lyComentario.getVisibility()==View.VISIBLE){
                                 if(dataFormEntity.getTag().equals(""))
-                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba, dataFormEntity.comentario);
+                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba, dataFormEntity.comentario, dataFormEntity.razon);
                                 else
                                     embeddedWifiListener.receiveDataForm(dataFormEntity);
-
 
                                 dismiss();
                             }
@@ -292,20 +418,25 @@ public class FormDialogTransaction extends AlertDialog {
 
         if (dataFormEntity.isSolicitaKilometraje()) {
             tvTitulo.setText("VEHÍCULO");
+            lyPlacaNFC.setVisibility(View.GONE);
             lyKilometraje.setVisibility(View.VISIBLE);
             etValidacion.setText(strMessageKilo);
         }else if (dataFormEntity.isSolicitaHorometro()) {
             tvTitulo.setText("VEHÍCULO");
+            lyPlacaNFC.setVisibility(View.GONE);
             lyHorometro.setVisibility(View.VISIBLE);
             etValidacion.setText(strMessageHoro);
         }else if (dataFormEntity.isSolicitaPreseteo()) {
             tvTitulo.setText("PRESETEO");
+            lyPlacaNFC.setVisibility(View.GONE);
             lyPreSeteo.setVisibility(View.VISIBLE);
             etValidacion.setText(strMessagePreSe);
         }else if (dataFormEntity.isSolicitaConductor()) {
+            lyPlacaNFC.setVisibility(View.GONE);
             lyConductor.setVisibility(View.VISIBLE);
             etValidacion.setText(strMessageScaneo);
         }else if(lyPlaca.getVisibility() == View.GONE){
+            lyPlacaNFC.setVisibility(View.GONE);
             lyComentario.setVisibility(View.VISIBLE);
             etValidacion.setText("Comentario máximo: 20 caracteres.");
         }  else{
@@ -464,7 +595,11 @@ public class FormDialogTransaction extends AlertDialog {
                 dataFormEntity.setIdConductor(String.format("%16s", etIdConductor.getText().toString()).replace(" ","0"));
                 Log.v("IdsConductor",dataFormEntity.idConductor);
             }
-        }else if (lyComentario.getVisibility()==View.VISIBLE) {
+        }else if (lyRazon.getVisibility()==View.VISIBLE){
+            int spRazonesId =  (spRazones.getSelectedItemPosition());
+            dataFormEntity.setRazon(reasonEntities.get(spRazonesId).getReasonNumber());
+
+        } else if (lyComentario.getVisibility()==View.VISIBLE) {
 
             String comentario = etComentario.getText().toString();
 
@@ -488,12 +623,14 @@ public class FormDialogTransaction extends AlertDialog {
         return response;
     }
 
-    public void escribirPlaca(byte[] responseDataDevice, String Placa){
+    public void escribirDataReadNfc(byte[] responseDataDevice, String Placa, String compartimiento){
         ResponseDataDevice = responseDataDevice;
+        IdProducto=responseDataDevice[18];
         messageErrorPlate.setVisibility(View.GONE);
         etValidacion.setText("");
         dataFormEntity.setPlaca(Placa);
         etPlaca.setText(Placa);
+        etCompartimiento.setText(compartimiento);
     }
 
     public void escribirErrorPlaca(String ErrorPlaca){
@@ -514,6 +651,5 @@ public class FormDialogTransaction extends AlertDialog {
         //messageErrorIdDriver.setText(ErrorIdConductor);
         //messageErrorIdDriver.setVisibility(View.VISIBLE);
     }
-
 
 }

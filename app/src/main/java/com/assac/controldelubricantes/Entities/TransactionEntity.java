@@ -56,6 +56,8 @@ public class TransactionEntity implements Serializable {
     public String idConductor;
     public String idOperador;
 
+    public int razon;
+    public int motivo;
 
     public String latitud;
     public String longitud;
@@ -462,5 +464,21 @@ public class TransactionEntity implements Serializable {
 
     public void setTotalizatorHose(String totalizatorHose) {
         this.totalizatorHose = totalizatorHose;
+    }
+
+    public int getRazon() {
+        return razon;
+    }
+
+    public void setRazon(int razon) {
+        this.razon = razon;
+    }
+
+    public int getMotivo() {
+        return motivo;
+    }
+
+    public void setMotivo(int motivo) {
+        this.motivo = motivo;
     }
 }

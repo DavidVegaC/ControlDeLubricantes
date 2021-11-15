@@ -184,6 +184,8 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String KEY_END_HOUR_TB_TRANSACTION= "EndHourTransaction";
     public static final String KEY_FUEL_QUANTITY_TB_TRANSACTION= "FuelQuantity";
     public static final String KEY_FUEL_TEMPERATURE_TB_TRANSACTION = "FuelTemperature";
+    public static final String KEY_REASON_TB_TRANSACTION = "Reason";
+    public static final String KEY_MOTIVE_TB_TRANSACTION = "Motive";
     public static final String KEY_COMMENT_TB_TRANSACTION = "Comment";
     public static final String KEY_PRODUCT_NAME_TB_TRANSACTION = "ProductName";
     public static final String KEY_OPERATOR_KEY_TB_TRANSACTION = "OperatorKey";
@@ -247,6 +249,8 @@ public class MyDatabase extends SQLiteOpenHelper {
                 + KEY_CONDUCTOR_KEY_TB_TRANSACTION + " TEXT,"
                 + KEY_FUEL_QUANTITY_TB_TRANSACTION + " TEXT,"
                 + KEY_FUEL_TEMPERATURE_TB_TRANSACTION + " TEXT,"
+                + KEY_REASON_TB_TRANSACTION + " INTEGER,"
+                + KEY_MOTIVE_TB_TRANSACTION + " INTEGER,"
                 + KEY_COMMENT_TB_TRANSACTION + " TEXT,"
                 + KEY_PRODUCT_NAME_TB_TRANSACTION + " TEXT,"
                 + KEY_OPERATOR_KEY_TB_TRANSACTION + " TEXT,"

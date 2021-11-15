@@ -201,7 +201,7 @@ public class LoginFragment extends Fragment {
 
                 reasonEntities = crudOperations.getAllReason();
 
-                String reasonString="";
+                /*String reasonString="";
 
                 for(int i =0;i<reasonEntities.size();i++){
                     reasonString+="ID: "+reasonEntities.get(i).getIdReason()+" \n";
@@ -209,6 +209,18 @@ public class LoginFragment extends Fragment {
                     reasonString+="Name: "+reasonEntities.get(i).getReasonName()+" \n";
                     reasonString+="Number: "+reasonEntities.get(i).getReasonNumber()+" \n";
                     reasonString+="Registration Status: "+reasonEntities.get(i).getRegistrationStatus()+" \n\n";
+                }*/
+
+                reasonEntities = crudOperations.getReasonsForNumberProduct(20);
+
+                String reasonString="";
+
+                for(int i =0;i<reasonEntities.size();i++){
+                    //reasonString+="ID: "+reasonEntities.get(i).getIdReason()+" \n";
+                    reasonString+="Product: "+reasonEntities.get(i).getIdProduct()+" \n";
+                    reasonString+="Name: "+reasonEntities.get(i).getReasonName()+" \n";
+                    reasonString+="Number: "+reasonEntities.get(i).getReasonNumber()+" \n";
+                    //reasonString+="Registration Status: "+reasonEntities.get(i).getRegistrationStatus()+" \n\n";
                 }
 
                 Log.v("RAZONES", reasonString);
@@ -221,7 +233,19 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 List<CompartmentEntity> compartmentEntities = new ArrayList<>();
 
-                compartmentEntities = crudOperations.getAllCompartment();
+                /*compartmentEntities = crudOperations.getAllCompartment();
+
+                String compartmentString="";
+
+                for(int i =0;i<compartmentEntities.size();i++){
+                    compartmentString+="ID: "+compartmentEntities.get(i).getIdCompartment()+" \n";
+                    compartmentString+="Product: "+compartmentEntities.get(i).getIdProduct()+" \n";
+                    compartmentString+="Type: "+compartmentEntities.get(i).getIdCompartmentType()+" \n";
+                    compartmentString+="Nombre: "+compartmentEntities.get(i).getCompartmentName()+" \n";
+                    compartmentString+="Registration Status: "+compartmentEntities.get(i).getRegistrationStatus()+" \n\n";
+                }*/
+
+                compartmentEntities = crudOperations.getCompartmentForPlate("WT040",16);
 
                 String compartmentString="";
 
@@ -233,6 +257,9 @@ public class LoginFragment extends Fragment {
                     compartmentString+="Registration Status: "+compartmentEntities.get(i).getRegistrationStatus()+" \n\n";
                 }
 
+
+
+
                 Log.v("COMPARTIMIENTOS", compartmentString);
 
             }
@@ -241,8 +268,9 @@ public class LoginFragment extends Fragment {
         btnListarVehiculos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<VehicleEntity> vehicleEntities = new ArrayList<>();
+                //List<VehicleEntity> vehicleEntities = new ArrayList<>();
 
+                /*
                 vehicleEntities = crudOperations.getAllVehicle();
 
                 String vehicleString="";
@@ -255,6 +283,20 @@ public class LoginFragment extends Fragment {
                     vehicleString+="Descripcion: "+vehicleEntities.get(i).getVehicleDescription()+" \n";
                     vehicleString+="Registration Status: "+vehicleEntities.get(i).getRegistrationStatus()+" \n\n";
                 }
+
+                 */
+
+                VehicleEntity vehicleEntity = crudOperations.getVehicleForPlate("WT040");
+
+                String vehicleString="";
+
+                    vehicleString+="ID: "+vehicleEntity.getIdVehicle()+" \n";
+                    vehicleString+="Company: "+vehicleEntity.getIdCompany()+" \n";
+                    vehicleString+="Model: "+vehicleEntity.getIdModel()+" \n";
+                    vehicleString+="Plate: "+vehicleEntity.getPlate()+" \n";
+                    vehicleString+="Descripcion: "+vehicleEntity.getVehicleDescription()+" \n";
+                    vehicleString+="Registration Status: "+vehicleEntity.getRegistrationStatus()+" \n\n";
+
 
                 Log.v("VEHICULOS", vehicleString);
 

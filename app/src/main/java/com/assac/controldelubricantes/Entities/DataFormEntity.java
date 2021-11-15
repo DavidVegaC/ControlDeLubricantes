@@ -11,6 +11,9 @@ public class DataFormEntity {
 
     public String placa;
     private String tag;
+
+    private int idCompartimiento;
+
     public boolean solicitaConductor;
     public boolean solicitaOperador;
     public boolean solicitaHorometro;
@@ -42,16 +45,19 @@ public class DataFormEntity {
     public String latitud;
     public String longitud;
 
+    public int razon;
+
     public String comentario;
 
     public DataFormEntity() {
     }
 
-    public DataFormEntity(int indiceBomba, int numeroBomba, String placa, String tag, boolean solicitaConductor, boolean solicitaOperador, boolean solicitaHorometro, boolean solicitaKilometraje, boolean validaHorometro, boolean validaKilometraje, boolean solicitaPreseteo, double kilometrajeActual, double kilometrajeMinimo, double kilometrajeMaximo, double horometroActual, double horometroMinimo, double horometroMaximo, int preseteoMinimo, int preseteoMaximo) {
+    public DataFormEntity(int indiceBomba, int numeroBomba, String placa, String tag, int idCompartimiento, boolean solicitaConductor, boolean solicitaOperador, boolean solicitaHorometro, boolean solicitaKilometraje, boolean validaHorometro, boolean validaKilometraje, boolean solicitaPreseteo, double kilometrajeActual, double kilometrajeMinimo, double kilometrajeMaximo, double horometroActual, double horometroMinimo, double horometroMaximo, int preseteoMinimo, int preseteoMaximo) {
         this.indiceBomba = indiceBomba;
         this.numeroBomba = numeroBomba;
         this.placa = placa;
         this.tag = tag;
+        this.idCompartimiento = idCompartimiento;
         this.solicitaConductor = solicitaConductor;
         this.solicitaOperador = solicitaOperador;
         this.solicitaHorometro = solicitaHorometro;
@@ -115,6 +121,14 @@ public class DataFormEntity {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public int getIdCompartimiento() {
+        return idCompartimiento;
+    }
+
+    public void setIdCompartimiento(int idCompartimiento) {
+        this.idCompartimiento = idCompartimiento;
     }
 
     public boolean isSolicitaConductor() {
@@ -315,5 +329,13 @@ public class DataFormEntity {
 
     public void setComentario(String comentario) {
         this.comentario = comentario;
+    }
+
+    public int getRazon() {
+        return razon;
+    }
+
+    public void setRazon(int razon) {
+        this.razon = razon;
     }
 }

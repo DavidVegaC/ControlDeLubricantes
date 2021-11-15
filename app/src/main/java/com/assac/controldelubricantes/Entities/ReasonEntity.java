@@ -29,6 +29,7 @@ public class ReasonEntity {
     public String ValorConsulta;
     public String MensajeConsulta;
 
+
     public ReasonEntity(){
 
     }

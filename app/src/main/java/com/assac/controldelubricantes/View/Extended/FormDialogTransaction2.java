@@ -205,7 +205,7 @@ public class FormDialogTransaction2 extends AlertDialog {
         lyPlacaNFC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                embeddedWifiListener.readNFCPlate(dataFormEntity.indiceBomba);
+                embeddedWifiListener.readNFCPlate(dataFormEntity.indiceBomba, 0);
             }
         });
 
@@ -275,7 +275,7 @@ public class FormDialogTransaction2 extends AlertDialog {
                                 break;
                             default:
                                 if(!validarDatosVehiculo()){
-                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba,"");
+                                    embeddedWifiListener.sendBytesEmbedded(ResponseDataDevice,dataFormEntity.direccion,dataFormEntity.numeroBomba,"",0);
                                     dismiss();
                                 }
                                 break;

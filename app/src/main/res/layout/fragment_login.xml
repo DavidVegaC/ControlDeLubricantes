@@ -238,72 +238,83 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/btnCrearUsuario"
-            android:visibility="gone"
-            android:text="Crear Usuario"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Crear Usuario"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnListarUsuario"
-            android:visibility="gone"
-            android:text="Listar Usuario"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="Listar Usuario"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnBuscarUsuario"
-            android:text="Buscar Usuario"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="Buscar Usuario"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnActualizarUsuario"
-            android:text="Actualizar Usuario"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="Actualizar Usuario"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnConsumirServicio"
-            android:text="ConsumirServicio"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="ConsumirServicio"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnListarProductos"
-            android:text="Listar Productos"></Button>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:id="@+id/btnListarCompartimientos"
-            android:text="Listar Compartimientos"></Button>
+            android:text="Listar Productos"
+            android:visibility="gone"></Button>
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             android:id="@+id/btnListarRazones"
-            android:text="Listar Razones"></Button>
-
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="Listar Razones"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnListarVehiculos"
-            android:text="Listar Vehiculos"></Button>
-
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:text="Listar Vehiculos"
+            android:visibility="gone"></Button>
+
+        <Button
             android:id="@+id/btnListarMCompartimientos"
-            android:text="Listar Modelos Compsrtimientos"></Button>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listar Modelos Compsrtimientos"
+            android:visibility="gone"></Button>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btnListarCompartimientos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Listar Compartimientos"
+        android:visibility="gone"
+        app:layout_anchor="@+id/linearLayout"
+        app:layout_anchorGravity="center"></Button>
     <!-- FIN SECCION BOTON INGRESAR-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
