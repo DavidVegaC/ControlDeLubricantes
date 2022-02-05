@@ -373,6 +373,7 @@ public class LoginFragment extends Fragment {
 
             //savePreferences(1, 1, "Pedro","Pérez","Gian","123456","", "Automation Service S.A.C.", "");
 
+
             int totalUsers = crudOperations.getUserCount();
 
             if(totalUsers > 0){
@@ -393,10 +394,10 @@ public class LoginFragment extends Fragment {
                 Toast.makeText(getActivity(),"No existen usuarios registrados en el aplicativo. Verifique si existen usuarios registrados en el Gestor Web o de lo contrario contacte al administrador del sistema.", Toast.LENGTH_LONG).show();
             }
 
-            /*
+        /*
             savePreferences(1, 1, "David", "Vega","Cordova","","","");
             mListener.goToMain();
-             */
+        */
 
         }
     }

@@ -8,7 +8,7 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
 
-    public static final String DATABASE_NAME = "BD_ASSAC_CTRL_LUBRICANTE_V1";
+        public static final String DATABASE_NAME = "BD_ASSAC_CTRL_LUBRICANTE_V1";
 
     public static final String TB_USER = "tb_user";
     public static final String TB_TRANSACTION = "tb_transaction";

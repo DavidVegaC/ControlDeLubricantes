@@ -1507,6 +1507,35 @@ public class CRUDOperations {
         return lst;
     }
 
+    public List<CompartmentEntity> getCompartmentForProduct(int product)
+    {
+        List<CompartmentEntity> lst =new ArrayList<CompartmentEntity>();
+
+        String sql = "";
+
+        sql = " SELECT "+
+                " C."+MyDatabase.KEY_ID_TB_COMPARTMENT+" , "+
+                " C."+MyDatabase.KEY_NAME_TB_COMPARTMENT+" "+
+                " FROM "+ MyDatabase.TB_COMPARTMENT +" C "+
+                " WHERE C."+MyDatabase.KEY_PRODUCT_TB_COMPARTMENT+" = "+product+" ";
+
+        Log.v("SQL",sql);
+
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, null);
+        if(cursor.moveToFirst())
+        {
+            do
+            {
+                CompartmentEntity compartmentEntity =new CompartmentEntity();
+                compartmentEntity.setIdCompartment(cursor.getInt(0));
+                compartmentEntity.setCompartmentName(cursor.getString(1));
+                lst.add(compartmentEntity);
+            }while(cursor.moveToNext());
+        }
+        return lst;
+    }
+
     //TB_REASON
     public int addReason(ReasonEntity reasonEntity)
     {

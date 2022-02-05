@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
+import com.assac.controldelubricantes.Entities.CompartmentEntity;
 import com.assac.controldelubricantes.Entities.DataFormEntity;
 import com.assac.controldelubricantes.Entities.Driver;
 import com.assac.controldelubricantes.Entities.Plate;
@@ -66,6 +67,7 @@ public class FormDialogTransaction extends AlertDialog {
     private TextView tvTitulo;
     private EditText etPlaca, etKilometraje, etHorometro, etPreSeteo, etComentario, etIdConductor, etCompartimiento, etValidacion;
     private LinearLayout lyConductorQR;
+    private LinearLayout lyEditTextCompartimiento, lySpinnerCompartimiento;
 
     private TextView messageErrorPlate, messageErrorIdDriver;
 
@@ -79,7 +81,7 @@ public class FormDialogTransaction extends AlertDialog {
     public boolean validarVehiculo;
     public boolean validarConductor;
 
-    public Spinner spRazones;
+    public Spinner spRazones, spCompartimientos;
 
     //Animación de pestañeo
     private AnimationDrawable rocketAnimationNFC, rocketAnimationQR;
@@ -89,6 +91,9 @@ public class FormDialogTransaction extends AlertDialog {
     private CRUDOperations crudOperations;
 
     private int IdProducto=20;
+    private boolean sendForm=false;
+
+    private List<CompartmentEntity> compartmentEntities = new ArrayList<>();
 
     protected FormDialogTransaction(@NonNull Context context) {
         super(context);
@@ -106,6 +111,7 @@ public class FormDialogTransaction extends AlertDialog {
         this.embeddedWifiListener = embeddedWifiListener;
         validarVehiculo=false;
         validarConductor=false;
+        sendForm=false;
     }
 
     protected FormDialogTransaction(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
@@ -145,6 +151,8 @@ public class FormDialogTransaction extends AlertDialog {
         lyComentario = (LinearLayout) v.findViewById(R.id.lyComentario);
         lyConductorQR = (LinearLayout) v.findViewById(R.id.lyConductorQR);
         lySiguiente = (LinearLayout) v.findViewById(R.id.lySiguiente);
+        lyEditTextCompartimiento= (LinearLayout) v.findViewById(R.id.lyEditTextCompartimiento);
+        lySpinnerCompartimiento= (LinearLayout) v.findViewById(R.id.lySpinnerCompartimiento);
 
         etPlaca = (EditText) v.findViewById(R.id.etPlaca);
         etHorometro = (EditText) v.findViewById(R.id.etHorometro);
@@ -161,6 +169,7 @@ public class FormDialogTransaction extends AlertDialog {
         btnRegistrar = (Button) v.findViewById(R.id.btnRegistrar);
 
         spRazones = (Spinner) v.findViewById(R.id.spRazones);
+        spCompartimientos = (Spinner) v.findViewById(R.id.spCompartimientos);
 
         lyConductorQR.setBackgroundResource(R.drawable.bg_blink_qr);
         rocketAnimationQR = (AnimationDrawable) lyConductorQR.getBackground();
@@ -544,18 +553,24 @@ public class FormDialogTransaction extends AlertDialog {
             }
 
             //Log.v("Comentario",String.format("%20s",etComentario.getText().toString()));
+        } else if (lyCompartimiento.getVisibility()==View.VISIBLE){
+            if(compartmentEntities.size()>0){
+                int spCompartimientoId =  (spCompartimientos.getSelectedItemPosition());
+                ResponseDataDevice[30]=(byte)compartmentEntities.get(spCompartimientoId).getIdCompartment();
+            }
         }
 
         if(etPlaca.getText().toString().equals("")){
             response = true;
             messageErrorPlate.setText("El campo placa no puede ser vacio.");
-            messageErrorPlate.setVisibility(View.VISIBLE);
+            messageErrorPlate.setVisibility(View.GONE);
         }
 
 
         return response;
     }
 
+    //Existe solo 1 compartimiento
     public void escribirDataReadNfc(byte[] responseDataDevice, String Placa, String compartimiento){
         ResponseDataDevice = responseDataDevice;
         IdProducto=responseDataDevice[18];
@@ -564,6 +579,30 @@ public class FormDialogTransaction extends AlertDialog {
         dataFormEntity.setPlaca(Placa);
         etPlaca.setText(Placa);
         etCompartimiento.setText(compartimiento);
+        lyEditTextCompartimiento.setVisibility(View.VISIBLE);
+        lySpinnerCompartimiento.setVisibility(View.GONE);
+    }
+
+    //Existe más de 1 compartimiento
+    public void escribirDataReadNfc2(byte[] responseDataDevice, String Placa, List<CompartmentEntity> compartmentEntities){
+        ResponseDataDevice = responseDataDevice;
+        IdProducto=responseDataDevice[18];
+        messageErrorPlate.setVisibility(View.GONE);
+        etValidacion.setText("");
+        dataFormEntity.setPlaca(Placa);
+        etPlaca.setText(Placa);
+        this.compartmentEntities=compartmentEntities;
+
+        ArrayList<String> strings = new ArrayList<>();
+        for(int i=0; i<compartmentEntities.size(); i++){
+            strings.add(compartmentEntities.get(i).getCompartmentName());
+        }
+        ArrayAdapter<String> stringArrayAdapter  = new ArrayAdapter<String>(getContext(),R.layout.spinner_theme_1,strings);
+        stringArrayAdapter.setDropDownViewResource(R.layout.spinner_theme_2);
+        spCompartimientos.setAdapter(stringArrayAdapter);
+
+        lyEditTextCompartimiento.setVisibility(View.GONE);
+        lySpinnerCompartimiento.setVisibility(View.VISIBLE);
     }
 
     public void escribirErrorPlaca(String ErrorPlaca){
@@ -603,4 +642,11 @@ public class FormDialogTransaction extends AlertDialog {
         etValidacion.setText("Seleccione una razón.");
     }
 
+    public void setSendForm(boolean sendForm){
+        this.sendForm = sendForm;
+    }
+
+    public boolean getSendForm(){
+        return this.sendForm;
+    }
 }

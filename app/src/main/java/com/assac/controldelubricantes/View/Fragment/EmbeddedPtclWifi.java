@@ -107,8 +107,8 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     Handler handlerSocket;
     final int handlerState = 0;
     //public static  String SERVER_IP = "192.168.1.98";
-    //public static  String SERVER_IP = "192.168.1.9";
-    public static  String SERVER_IP = "192.168.4.22";
+    public static  String SERVER_IP = "192.168.1.20";
+    //public static  String SERVER_IP = "192.168.4.22";
     public static  int SERVER_PORT = 2230;
 
     private ClientTCPThread clientTCPThread;
@@ -214,6 +214,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
     List<Integer> listTicketsPending;
 
     private TextView tvNombreOperador;
+    private int indiceLayoutHose;
 
     public EmbeddedPtclWifi() {
         // Required empty public constructor
@@ -630,15 +631,38 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
 
             if (wifiSocket.isConnected()) {
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            mBufferOut.write(bufferTransmision,0,longitud);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                switch (opcode){
+                    case EmbeddedPtcl.b_ext_enviar_data_formulario:
+                        new Thread(new Runnable() {
+                            public void run() {
+                                final int aux=indiceLayoutHose;
+                                final byte[] bytes = bufferTransmision;
+                                final int longBytes = longitud;
+                                while (layoutsHose.get(aux).formDialogTransaction !=null && !layoutsHose.get(aux).formDialogTransaction.getSendForm()){
+                                    try {
+                                        mBufferOut.write(bytes,0,longBytes);
+                                        Thread.sleep(1000);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }).start();
+                        break;
+                    default:
+                        new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    mBufferOut.write(bufferTransmision,0,longitud);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).start();
+                        break;
+
+                }
+
             }
             //timerNoComunicacion(1500);
         }
@@ -792,7 +816,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
 
     //PROCESAR TRAMA COMPLETA RECIBIDA
     public void procesarTramaEasyFuel(){
-        int indiceLayoutHose=0;
+        indiceLayoutHose=0;
         int[] arrayIdBomba = new int[1];
         int idBomba = 0;
         switch (bufferRecepcion[4]){
@@ -884,6 +908,7 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
                         if(longitudTramaRecepcion==12){
                             //Recibir ok de embedded
                             //layoutsHose.get(indiceLayoutHose).formDialogTransaction=null;
+                            layoutsHose.get(indiceLayoutHose).formDialogTransaction.setSendForm(true);
                         }else{
                             if(layoutsHose.get(indiceLayoutHose).getState() == 1){
                                 clientTCPThread.write(EmbeddedPtcl.b_ext_cambio_estado);
@@ -3165,55 +3190,73 @@ public class EmbeddedPtclWifi extends Fragment implements EmbeddedWifiListener {
         mainListener.dismissProgressDialog();
         mainListener.disableForegroundDispatchSystem();
         String responseDataTexto = "";
+        List<CompartmentEntity> compartmentEntities = new ArrayList<>();
 
 
-        int productoResponse = responseDataDevice[18];
+        int productoResponse = 0;//responseDataDevice[18];
+        int idCompartimiento = 0;//responseDataDevice[30];
 
         Hose hose = getHoseByNumber(numeroBombaRead);
-
         Log.v("Producto", ""+hose.getIdProduct());
 
-        if(productoResponse != hose.getIdProduct())
-            mostrarMensajeUsuario("Producto no coincide con esta manguera.");
-        else{
-            responseDataTexto = Utils.byteArrayToHexString(responseDataDevice,responseDataDevice.length);
-            Log.v("TAG", responseDataTexto);
-
-            int[] tramaPlaca = new int[10];
-            int c = 0;
-            for(int i = 1; i<= 10;  i++){
-                tramaPlaca[c] = responseDataDevice[i];
-                c++;
-            }
-
-            placa = hexToAscii(byteArrayToHexString(tramaPlaca,tramaPlaca.length)).trim();
-
-            VehicleEntity vehicleEntity = crudOperations .getVehicleForPlate(placa);
-
-            if(vehicleEntity.getIdSqlLite()!= 0){
-                List<CompartmentEntity> compartmentEntities = new ArrayList<>();
-
-                Log.v("Compartimiento",""+responseDataDevice[30]);
-
-                compartmentEntities = crudOperations.getCompartmentForPlate(placa,responseDataDevice[30]);
-
-                if(compartmentEntities.size()>0){
-                    if(layoutsHose.get(indiceBombaRead).formDialogTransaction!=null){
-                        layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirDataReadNfc(responseDataDevice, placa, compartmentEntities.get(0).getCompartmentName());
-                    }
-                }else{
-                    mostrarMensajeUsuario("Compartimiento no conforme con el modelo del vehiculo.");
-                }
-            }else{
-                mostrarMensajeUsuario("El vehiculo con placa "+placa+" no se encuentra registrado.");
-            }
-
-
-
-
-
+        int[] tramaPlaca = new int[10];
+        int c = 0;
+        for (int i = 1; i <= 10; i++) {
+            tramaPlaca[c] = responseDataDevice[i];
+            c++;
         }
 
+        placa = hexToAscii(byteArrayToHexString(tramaPlaca, tramaPlaca.length)).trim();
+
+        //Validar si es TAG MAESTRO
+        if(productoResponse == 0 && idCompartimiento == 0) {
+
+            compartmentEntities = crudOperations.getCompartmentForProduct(hose.getIdProduct());
+            if (compartmentEntities.size() > 1) {
+                if (layoutsHose.get(indiceBombaRead).formDialogTransaction != null) {
+                    layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirDataReadNfc2(responseDataDevice, placa, compartmentEntities);
+                }
+            } else if(compartmentEntities.size() == 1){
+                if (layoutsHose.get(indiceBombaRead).formDialogTransaction != null) {
+                    responseDataDevice[30]=(byte)compartmentEntities.get(0).getIdCompartment();
+                    layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirDataReadNfc(responseDataDevice, placa, compartmentEntities.get(0).getCompartmentName());
+                }
+            }else {
+                mostrarMensajeUsuario("No se encontraron compartimientos para el producto "+productoResponse + ".");
+            }
+        }else {
+
+            if (productoResponse != hose.getIdProduct())
+                mostrarMensajeUsuario("Producto no coincide con esta manguera.");
+            else {
+                responseDataTexto = Utils.byteArrayToHexString(responseDataDevice, responseDataDevice.length);
+                Log.v("TAG", responseDataTexto);
+
+                VehicleEntity vehicleEntity = crudOperations.getVehicleForPlate(placa);
+
+                if (vehicleEntity.getIdSqlLite() != 0) {
+
+
+                    //Log.v("Compartimiento",""+responseDataDevice[30]);
+                    Log.v("Compartimiento", "" + idCompartimiento);
+
+                    compartmentEntities = crudOperations.getCompartmentForPlate(placa, idCompartimiento);
+
+                    if (compartmentEntities.size() > 0) {
+                        if (layoutsHose.get(indiceBombaRead).formDialogTransaction != null) {
+                            layoutsHose.get(indiceBombaRead).formDialogTransaction.escribirDataReadNfc(responseDataDevice, placa, compartmentEntities.get(0).getCompartmentName());
+                        }
+                    } else {
+                        mostrarMensajeUsuario("Compartimiento no conforme con el modelo del vehiculo.");
+                    }
+                } else {
+                    mostrarMensajeUsuario("El vehiculo con placa " + placa + " no se encuentra registrado.");
+                }
+
+
+            }
+
+        }
         //procesarInfoHMI(responseDataDevice);
 
 
